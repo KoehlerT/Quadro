@@ -23,7 +23,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "imu.h"
+#include "i2c_scanner.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -43,6 +44,8 @@
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
 
+USART_HandleTypeDef husart1;
+
 PCD_HandleTypeDef hpcd_USB_FS;
 
 /* USER CODE BEGIN PV */
@@ -54,6 +57,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USB_PCD_Init(void);
 static void MX_I2C1_Init(void);
+static void MX_USART1_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -93,14 +97,42 @@ int main(void)
   MX_GPIO_Init();
   MX_USB_PCD_Init();
   MX_I2C1_Init();
+  MX_USART1_Init();
   /* USER CODE BEGIN 2 */
-
+	char message[30];
+	for (int i = 0; i < 30; i++) message[i] = ' ';
+	message[28] = '\n';message[29] = '\r';
+	HAL_Delay(500);
+	
+	//Check state of i2c
+	HAL_I2C_StateTypeDef state = HAL_I2C_GetState(&hi2c1); 
+	sprintf(message, "i2c init: %x",state);//x24: busy, x20 ready
+	HAL_USART_Transmit(&husart1, (uint8_t *)message, 30, 1000);
+	
+	//i2c_scanner(&hi2c1);
+	
+	__HAL_RCC_I2C1_FORCE_RESET();
+	HAL_Delay(1000);
+	__HAL_RCC_I2C1_RELEASE_RESET();
+	
+	init_gyro(&hi2c1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  HAL_GPIO_TogglePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin); //Blink
+	  read_gyro();
+	  //Clear message array
+	  for (int i = 0; i < 30; i++) message[i] = ' ';
+	  message[28] = '\n'; message[29] = '\r';
+	  //Print Message
+	  sprintf(message, "t: %d *C", temperature);
+	  HAL_USART_Transmit(&husart1, (uint8_t *)message, 30, 1000);
+	  
+	  //Delay
+	  HAL_Delay(1000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -183,6 +215,40 @@ static void MX_I2C1_Init(void)
   /* USER CODE BEGIN I2C1_Init 2 */
 
   /* USER CODE END I2C1_Init 2 */
+
+}
+
+/**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  husart1.Instance = USART1;
+  husart1.Init.BaudRate = 115200;
+  husart1.Init.WordLength = USART_WORDLENGTH_8B;
+  husart1.Init.StopBits = USART_STOPBITS_1;
+  husart1.Init.Parity = USART_PARITY_NONE;
+  husart1.Init.Mode = USART_MODE_TX_RX;
+  husart1.Init.CLKPolarity = USART_POLARITY_LOW;
+  husart1.Init.CLKPhase = USART_PHASE_1EDGE;
+  husart1.Init.CLKLastBit = USART_LASTBIT_DISABLE;
+  if (HAL_USART_Init(&husart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
 
 }
 

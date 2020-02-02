@@ -94,6 +94,18 @@
     <Filter Include="VisualGDB settings">
       <UniqueIdentifier>{6d8d509f-dded-4d0e-9756-89e0eba472e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source files\STM32Cube HAL\I2C">
+      <UniqueIdentifier>{39e6c17c-43d4-4532-b561-bbfb6aec4889}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\STM32Cube HAL\I2C">
+      <UniqueIdentifier>{0d225838-0b7f-434a-b3f9-60698e553795}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\STM32Cube HAL\USART">
+      <UniqueIdentifier>{dc0a2ba1-8e90-482e-9beb-1fc14331d011}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\STM32Cube HAL\USART">
+      <UniqueIdentifier>{93fe7d24-45db-487d-a58e-374b1db027bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\stm32f1xx_it.c">
@@ -243,5 +255,31 @@
     <None Include="stm32.xml">
       <Filter>VisualGDB settings</Filter>
     </None>
+    <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_i2c.c">
+      <Filter>Source files\STM32Cube HAL\I2C</Filter>
+    </ClCompile>
+    <ClInclude Include="Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h">
+      <Filter>Header files\STM32Cube HAL\I2C</Filter>
+    </ClInclude>
+    <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_usart.c">
+      <Filter>Source files\STM32Cube HAL\USART</Filter>
+    </ClCompile>
+    <ClInclude Include="Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_usart.h">
+      <Filter>Header files\STM32Cube HAL\USART</Filter>
+    </ClInclude>
+    <ClCompile Include="Src\imu.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\i2c_scanner.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Inc\imu.h">
+      <Filter>Source files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\i2c_scanner.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
