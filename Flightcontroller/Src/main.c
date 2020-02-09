@@ -45,6 +45,7 @@
 I2C_HandleTypeDef hi2c1;
 
 TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim3;
 
 USART_HandleTypeDef husart1;
 
@@ -61,6 +62,7 @@ static void MX_USB_PCD_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_USART1_Init(void);
+static void MX_TIM3_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -102,6 +104,7 @@ int main(void)
   MX_I2C1_Init();
   MX_TIM2_Init();
   MX_USART1_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 	//Initializing Clock for Profiling and Timekeeping
 	CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
@@ -128,6 +131,9 @@ int main(void)
 	//Initializing Receiver input handling
 	init_receiver(&htim2);
 	
+	//Initializing Motor PWM Pulse generation
+	HAL_TIM_PWM_Init(&htim3);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -135,10 +141,16 @@ int main(void)
   while (1)
   {
 	  //Reset Clock
-	  DWT->CYCCNT = 0;
+	  DWT->CYCCNT = 0; //72 Cycles => 1ms => 288.000 Cycles total (72 * 4000) 4ms
 	  HAL_GPIO_TogglePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin); //Blink
+	  //Read Gyroscope info
 	  read_gyro();
 	  uint16_t timeGyro = DWT->CYCCNT;
+	  
+	  //Calculate PID Controls
+	  
+	  //Set new Motor Speeds
+	  htim3.Instance->CCR4 = 1500;
 	  
 	  //Print status message via Serial
 	  for (int i = 0; i < 50; i++) message[i] = ' ';
@@ -147,7 +159,7 @@ int main(void)
 	  sprintf(message, " ch1: %d, time %d",channel[0],timeGyro);
 	  HAL_USART_Transmit(&husart1, (uint8_t *)message, 50, 1000);
 	  //Delay
-	  HAL_Delay(1000);
+	  while(DWT->CYCCNT <= 72 * 4000);  //72 000 000Hz wait for next cycle -> every cycle 4ms
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -278,6 +290,67 @@ static void MX_TIM2_Init(void)
   /* USER CODE BEGIN TIM2_Init 2 */
 
   /* USER CODE END TIM2_Init 2 */
+
+}
+
+/**
+  * @brief TIM3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM3_Init(void)
+{
+
+  /* USER CODE BEGIN TIM3_Init 0 */
+
+  /* USER CODE END TIM3_Init 0 */
+
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM3_Init 1 */
+
+  /* USER CODE END TIM3_Init 1 */
+  htim3.Instance = TIM3;
+  htim3.Init.Prescaler = 71;
+  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim3.Init.Period = 5000;
+  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_PWM_Init(&htim3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM3_Init 2 */
+
+  /* USER CODE END TIM3_Init 2 */
+  HAL_TIM_MspPostInit(&htim3);
 
 }
 
