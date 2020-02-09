@@ -103,39 +103,49 @@ int main(void)
   MX_TIM2_Init();
   MX_USART1_Init();
   /* USER CODE BEGIN 2 */
-	char message[30];
-	for (int i = 0; i < 30; i++) message[i] = ' ';
-	message[28] = '\n';message[29] = '\r';
+	//Initializing Clock for Profiling and Timekeeping
+	CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+	DWT->CYCCNT = 0;
+	DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+	
+	//Initializing debug message String
+	char message[50];
+	for (int i = 0; i < 50; i++) message[i] = ' ';
+	message[48] = '\n';message[49] = '\r';
 	HAL_Delay(500);
 	
 	//Check state of i2c
 	HAL_I2C_StateTypeDef state = HAL_I2C_GetState(&hi2c1); 
 	sprintf(message, "i2c init: %x",state);//x24: busy, x20 ready
 	HAL_USART_Transmit(&husart1, (uint8_t *)message, 30, 1000);
-	
-	//i2c_scanner(&hi2c1);
-	
+	//Reset busy flag of i2c (bugfix)
 	__HAL_RCC_I2C1_FORCE_RESET();
 	HAL_Delay(1000);
 	__HAL_RCC_I2C1_RELEASE_RESET();
-	
+	//initialize Gyro
 	init_gyro(&hi2c1);
+	
+	//Initializing Receiver input handling
 	init_receiver(&htim2);
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  //Reset Clock
+	  DWT->CYCCNT = 0;
 	  HAL_GPIO_TogglePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin); //Blink
 	  read_gyro();
-	  //Clear message array
-	  for (int i = 0; i < 30; i++) message[i] = ' ';
-	  message[28] = '\n'; message[29] = '\r';
-	  //Print Message
-	  sprintf(message, "t: %d *C, ch1: %d", temperature,channel[0]);
-	  HAL_USART_Transmit(&husart1, (uint8_t *)message, 30, 1000);
+	  uint16_t timeGyro = DWT->CYCCNT;
 	  
+	  //Print status message via Serial
+	  for (int i = 0; i < 50; i++) message[i] = ' ';
+	  message[48] = '\n'; message[49] = '\r';
+	  //Print Message
+	  sprintf(message, " ch1: %d, time %d",channel[0],timeGyro);
+	  HAL_USART_Transmit(&husart1, (uint8_t *)message, 50, 1000);
 	  //Delay
 	  HAL_Delay(1000);
     /* USER CODE END WHILE */
