@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include "imu.h"
 #include "receiver.h"
+#include "pid.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -122,9 +123,11 @@ int main(void)
 	sprintf(message, "i2c init: %x",state);//x24: busy, x20 ready
 	HAL_USART_Transmit(&husart1, (uint8_t *)message, 30, 1000);
 	//Reset busy flag of i2c (bugfix)
+	__HAL_RCC_GPIOB_CLK_ENABLE();
 	__HAL_RCC_I2C1_FORCE_RESET();
 	HAL_Delay(1000);
 	__HAL_RCC_I2C1_RELEASE_RESET();
+	
 	//initialize Gyro
 	init_gyro(&hi2c1);
 	
@@ -134,6 +137,19 @@ int main(void)
 	//Initializing Motor PWM Pulse generation
 	HAL_TIM_PWM_Init(&htim3);
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
+	
+	//Calibration
+	//Calibrate gyro:
+    HAL_Delay(100);
+	sprintf(message, "Calibrating gyro");
+	HAL_USART_Transmit(&husart1, (uint8_t *)message, 30, 1000);
+	calibrate_gyro();
+	
+	//Calibrate Level
+	sprintf(message, "Calibrating level");
+	HAL_USART_Transmit(&husart1, (uint8_t *)message, 30, 1000);
+	calibrate_level();
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -148,6 +164,7 @@ int main(void)
 	  uint16_t timeGyro = DWT->CYCCNT;
 	  
 	  //Calculate PID Controls
+	  calculate_pid();
 	  
 	  //Set new Motor Speeds
 	  htim3.Instance->CCR4 = 1500;
@@ -156,8 +173,16 @@ int main(void)
 	  for (int i = 0; i < 50; i++) message[i] = ' ';
 	  message[48] = '\n'; message[49] = '\r';
 	  //Print Message
-	  sprintf(message, " ch1: %d, time %d",channel[0],timeGyro);
+	  sprintf(message, " ch1: %d, time %d, acc(y,x) %d, %d", channel[0], timeGyro, acc_x, acc_y);
 	  HAL_USART_Transmit(&husart1, (uint8_t *)message, 50, 1000);
+	  
+	  //Print status message via Serial
+	  for(int i = 0 ; i < 50 ; i++) message[i] = ' ';
+	  message[48] = '\n'; message[49] = '\r';
+	  //Print Message
+	  sprintf(message, "gyr (r,p,y): %d,%d,%d", gyro_roll, gyro_pitch, gyro_yaw);
+	  HAL_USART_Transmit(&husart1, (uint8_t *)message, 50, 1000);
+	  
 	  //Delay
 	  while(DWT->CYCCNT <= 72 * 4000);  //72 000 000Hz wait for next cycle -> every cycle 4ms
     /* USER CODE END WHILE */

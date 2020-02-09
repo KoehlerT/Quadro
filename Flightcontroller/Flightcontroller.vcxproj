@@ -78,6 +78,7 @@
   <ItemGroup>
     <ClCompile Include="Src\i2c_scanner.c" />
     <ClCompile Include="Src\imu.c" />
+    <ClCompile Include="Src\pid.c" />
     <ClCompile Include="Src\reveiver.c" />
     <ClCompile Include="Src\stm32f1xx_it.c" />
     <ClCompile Include="Src\stm32f1xx_hal_msp.c" />
@@ -98,8 +99,10 @@
     <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_flash.c" />
     <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_flash_ex.c" />
     <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_gpio.c" />
+    <ClInclude Include="Inc\pid.h" />
+    <ClInclude Include="Inc\pid_limits.h" />
     <ClInclude Include="Src\i2c_scanner.h" />
-    <ClInclude Include="Src\receiver.h" />
+    <ClInclude Include="Inc\receiver.h" />
     <None Include="stm32.props" />
     <ClCompile Include="$(BSP_ROOT)\STM32F1xxxx\StartupFiles\startup_stm32f103xb.c" />
     <ClInclude Include="Inc\imu.h" />
