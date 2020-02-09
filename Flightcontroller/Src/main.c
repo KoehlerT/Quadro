@@ -24,7 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "imu.h"
-#include "i2c_scanner.h"
+#include "receiver.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,6 +44,8 @@
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
 
+TIM_HandleTypeDef htim2;
+
 USART_HandleTypeDef husart1;
 
 PCD_HandleTypeDef hpcd_USB_FS;
@@ -57,6 +59,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USB_PCD_Init(void);
 static void MX_I2C1_Init(void);
+static void MX_TIM2_Init(void);
 static void MX_USART1_Init(void);
 /* USER CODE BEGIN PFP */
 
@@ -97,6 +100,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USB_PCD_Init();
   MX_I2C1_Init();
+  MX_TIM2_Init();
   MX_USART1_Init();
   /* USER CODE BEGIN 2 */
 	char message[30];
@@ -116,6 +120,7 @@ int main(void)
 	__HAL_RCC_I2C1_RELEASE_RESET();
 	
 	init_gyro(&hi2c1);
+	init_receiver(&htim2);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -128,7 +133,7 @@ int main(void)
 	  for (int i = 0; i < 30; i++) message[i] = ' ';
 	  message[28] = '\n'; message[29] = '\r';
 	  //Print Message
-	  sprintf(message, "t: %d *C", temperature);
+	  sprintf(message, "t: %d *C, ch1: %d", temperature,channel[0]);
 	  HAL_USART_Transmit(&husart1, (uint8_t *)message, 30, 1000);
 	  
 	  //Delay
@@ -215,6 +220,54 @@ static void MX_I2C1_Init(void)
   /* USER CODE BEGIN I2C1_Init 2 */
 
   /* USER CODE END I2C1_Init 2 */
+
+}
+
+/**
+  * @brief TIM2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM2_Init(void)
+{
+
+  /* USER CODE BEGIN TIM2_Init 0 */
+
+  /* USER CODE END TIM2_Init 0 */
+
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_IC_InitTypeDef sConfigIC = {0};
+
+  /* USER CODE BEGIN TIM2_Init 1 */
+
+  /* USER CODE END TIM2_Init 1 */
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 71;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 0xFFFF;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_IC_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_RISING;
+  sConfigIC.ICSelection = TIM_ICSELECTION_DIRECTTI;
+  sConfigIC.ICPrescaler = TIM_ICPSC_DIV1;
+  sConfigIC.ICFilter = 0;
+  if (HAL_TIM_IC_ConfigChannel(&htim2, &sConfigIC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM2_Init 2 */
+
+  /* USER CODE END TIM2_Init 2 */
 
 }
 

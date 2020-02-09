@@ -273,12 +273,18 @@
     <ClCompile Include="Src\i2c_scanner.c">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="Src\reveiver.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Inc\imu.h">
       <Filter>Source files</Filter>
     </ClInclude>
     <ClInclude Include="Src\i2c_scanner.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\receiver.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
