@@ -44,6 +44,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
+I2C_HandleTypeDef hi2c2;
 
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
@@ -60,10 +61,11 @@ PCD_HandleTypeDef hpcd_USB_FS;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USB_PCD_Init(void);
-static void MX_I2C1_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_USART1_Init(void);
+static void MX_I2C2_Init(void);
 static void MX_TIM3_Init(void);
+static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -102,10 +104,11 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USB_PCD_Init();
-  MX_I2C1_Init();
   MX_TIM2_Init();
   MX_USART1_Init();
+  MX_I2C2_Init();
   MX_TIM3_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 	//Initializing Clock for Profiling and Timekeeping
 	CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
@@ -119,17 +122,17 @@ int main(void)
 	HAL_Delay(500);
 	
 	//Check state of i2c
-	HAL_I2C_StateTypeDef state = HAL_I2C_GetState(&hi2c1); 
+	HAL_I2C_StateTypeDef state = HAL_I2C_GetState(&hi2c2); 
 	sprintf(message, "i2c init: %x",state);//x24: busy, x20 ready
 	HAL_USART_Transmit(&husart1, (uint8_t *)message, 30, 1000);
 	//Reset busy flag of i2c (bugfix)
 	__HAL_RCC_GPIOB_CLK_ENABLE();
-	__HAL_RCC_I2C1_FORCE_RESET();
+	__HAL_RCC_I2C2_FORCE_RESET();
 	HAL_Delay(1000);
-	__HAL_RCC_I2C1_RELEASE_RESET();
+	__HAL_RCC_I2C2_RELEASE_RESET();
 	
 	//initialize Gyro
-	init_gyro(&hi2c1);
+	init_gyro(&hi2c2);
 	
 	//Initializing Receiver input handling
 	init_receiver(&htim2);
@@ -143,12 +146,12 @@ int main(void)
     HAL_Delay(100);
 	sprintf(message, "Calibrating gyro");
 	HAL_USART_Transmit(&husart1, (uint8_t *)message, 30, 1000);
-	calibrate_gyro();
+	//calibrate_gyro();
 	
 	//Calibrate Level
 	sprintf(message, "Calibrating level");
 	HAL_USART_Transmit(&husart1, (uint8_t *)message, 30, 1000);
-	calibrate_level();
+	//calibrate_level();
 	
   /* USER CODE END 2 */
 
@@ -267,6 +270,40 @@ static void MX_I2C1_Init(void)
   /* USER CODE BEGIN I2C1_Init 2 */
 
   /* USER CODE END I2C1_Init 2 */
+
+}
+
+/**
+  * @brief I2C2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C2_Init(void)
+{
+
+  /* USER CODE BEGIN I2C2_Init 0 */
+
+  /* USER CODE END I2C2_Init 0 */
+
+  /* USER CODE BEGIN I2C2_Init 1 */
+
+  /* USER CODE END I2C2_Init 1 */
+  hi2c2.Instance = I2C2;
+  hi2c2.Init.ClockSpeed = 400000;
+  hi2c2.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  hi2c2.Init.OwnAddress1 = 0;
+  hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c2.Init.OwnAddress2 = 0;
+  hi2c2.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c2.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C2_Init 2 */
+
+  /* USER CODE END I2C2_Init 2 */
 
 }
 
