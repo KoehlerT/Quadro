@@ -273,10 +273,13 @@
     <ClCompile Include="Src\i2c_scanner.c">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\reveiver.c">
+    <ClCompile Include="Src\pid.c">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\pid.c">
+    <ClCompile Include="Src\receiver.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\motors.c">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -294,6 +297,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Inc\pid_limits.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\motors.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,7 +2,7 @@
 File.Version=6
 I2C1.I2C_Mode=I2C_Fast
 I2C1.IPParameters=I2C_Mode
-I2C2.I2C_Mode=I2C_Fast
+I2C2.I2C_Mode=I2C_Standard
 I2C2.IPParameters=I2C_Mode
 KeepUserPlacement=false
 Mcu.Family=STM32F1
@@ -142,7 +142,7 @@ ProjectManager.StackSize=0x400
 ProjectManager.TargetToolchain=Other Toolchains (GPDSC)
 ProjectManager.ToolChainLocation=
 ProjectManager.UnderRoot=false
-ProjectManager.functionlistsort=1-MX_GPIO_Init-GPIO-false-HAL-true,2-SystemClock_Config-RCC-false-HAL-false,3-MX_USB_PCD_Init-USB-false-HAL-true,4-MX_TIM2_Init-TIM2-false-HAL-true,5-MX_USART1_Init-USART1-false-HAL-true,6-MX_I2C2_Init-I2C2-false-HAL-true,7-MX_TIM3_Init-TIM3-false-HAL-true
+ProjectManager.functionlistsort=1-MX_GPIO_Init-GPIO-false-HAL-true,2-SystemClock_Config-RCC-false-HAL-false,3-MX_USB_PCD_Init-USB-false-HAL-true,4-MX_TIM2_Init-TIM2-false-HAL-true,5-MX_USART1_Init-USART1-false-HAL-true,6-MX_I2C2_Init-I2C2-false-HAL-true,7-MX_TIM3_Init-TIM3-false-HAL-true,8-MX_I2C1_Init-I2C1-false-HAL-true
 RCC.ADCFreqValue=36000000
 RCC.AHBFreq_Value=72000000
 RCC.APB1CLKDivider=RCC_HCLK_DIV2

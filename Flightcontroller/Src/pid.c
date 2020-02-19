@@ -1,8 +1,6 @@
 #include "pid.h"
 #include "pid_limits.h"
 
-int16_t esc_1, esc_2, esc_3, esc_4;
-
 //PID Variables
 float roll_level_adjust, pitch_level_adjust;
 float pid_error_temp;

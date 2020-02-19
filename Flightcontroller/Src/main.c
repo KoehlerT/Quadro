@@ -26,6 +26,7 @@
 #include "imu.h"
 #include "receiver.h"
 #include "pid.h"
+#include "motors.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -138,20 +139,19 @@ int main(void)
 	init_receiver(&htim2);
 	
 	//Initializing Motor PWM Pulse generation
-	HAL_TIM_PWM_Init(&htim3);
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
+	init_motors(&htim3);
 	
 	//Calibration
 	//Calibrate gyro:
     HAL_Delay(100);
 	sprintf(message, "Calibrating gyro");
 	HAL_USART_Transmit(&husart1, (uint8_t *)message, 30, 1000);
-	//calibrate_gyro();
+	calibrate_gyro();
 	
 	//Calibrate Level
 	sprintf(message, "Calibrating level");
 	HAL_USART_Transmit(&husart1, (uint8_t *)message, 30, 1000);
-	//calibrate_level();
+	calibrate_level();
 	
   /* USER CODE END 2 */
 
@@ -164,19 +164,21 @@ int main(void)
 	  HAL_GPIO_TogglePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin); //Blink
 	  //Read Gyroscope info
 	  read_gyro();
-	  uint16_t timeGyro = DWT->CYCCNT;
 	  
 	  //Calculate PID Controls
 	  calculate_pid();
 	  
 	  //Set new Motor Speeds
-	  htim3.Instance->CCR4 = 1500;
+	  //throttle = channel 2
+	  set_motors(channel[2]);
 	  
 	  //Print status message via Serial
 	  for (int i = 0; i < 50; i++) message[i] = ' ';
 	  message[48] = '\n'; message[49] = '\r';
+	  
+	  uint16_t time = DWT->CYCCNT / 72;
 	  //Print Message
-	  sprintf(message, " ch1: %d, time %d, acc(y,x) %d, %d", channel[0], timeGyro, acc_x, acc_y);
+	  sprintf(message, " ch1: %d, time %d us, acc(y,x) %d, %d", channel[0], time, acc_x, acc_y);
 	  HAL_USART_Transmit(&husart1, (uint8_t *)message, 50, 1000);
 	  
 	  //Print status message via Serial
@@ -289,7 +291,7 @@ static void MX_I2C2_Init(void)
 
   /* USER CODE END I2C2_Init 1 */
   hi2c2.Instance = I2C2;
-  hi2c2.Init.ClockSpeed = 400000;
+  hi2c2.Init.ClockSpeed = 100000;
   hi2c2.Init.DutyCycle = I2C_DUTYCYCLE_2;
   hi2c2.Init.OwnAddress1 = 0;
   hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
