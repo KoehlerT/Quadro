@@ -270,7 +270,10 @@
     <ClCompile Include="Src\pid.c">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\receiver.c">
+    <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_usart.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\led.c">
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="Src\motors.c">
@@ -282,7 +285,10 @@
     <ClInclude Include="Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h">
       <Filter>Header files\STM32Cube HAL\UART</Filter>
     </ClInclude>
-    <ClCompile Include="Src\led.c">
+    <ClCompile Include="Src\reveiver.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\receiver.c">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -293,19 +299,22 @@
     <ClInclude Include="Src\i2c_scanner.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="Inc\receiver.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="Inc\pid.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Inc\pid_limits.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_usart.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
     <ClInclude Include="Inc\motors.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Inc\led.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\receiver.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
