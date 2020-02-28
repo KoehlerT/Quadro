@@ -172,3 +172,17 @@ void calculate_correction()
 
 	pid_last_yaw_d_error = pid_error_temp;
 }
+
+extern void reset_controllers()
+{
+	angle_pitch = angle_pitch_acc;
+	angle_roll = angle_roll_acc;
+	
+	//Reset the PID controllers for a bumpless start.
+    pid_i_mem_roll = 0;
+	pid_last_roll_d_error = 0;
+	pid_i_mem_pitch = 0;
+	pid_last_pitch_d_error = 0;
+	pid_i_mem_yaw = 0;
+	pid_last_yaw_d_error = 0;
+}

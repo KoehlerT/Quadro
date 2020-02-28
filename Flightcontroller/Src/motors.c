@@ -17,23 +17,35 @@ void init_motors(TIM_HandleTypeDef* handle)
 
 void set_motors(int16_t throttle)
 {
-	esc_1 = throttle - pid_output_pitch + pid_output_roll - pid_output_yaw;
-	esc_2 = throttle + pid_output_pitch + pid_output_roll + pid_output_yaw;
-	esc_3 = throttle + pid_output_pitch - pid_output_roll - pid_output_yaw;
-	esc_4 = throttle - pid_output_pitch - pid_output_roll + pid_output_yaw;
+	if (mode == MANUAL)
+	{
+		esc_1 = throttle - pid_output_pitch + pid_output_roll - pid_output_yaw;
+		esc_2 = throttle + pid_output_pitch + pid_output_roll + pid_output_yaw;
+		esc_3 = throttle + pid_output_pitch - pid_output_roll - pid_output_yaw;
+		esc_4 = throttle - pid_output_pitch - pid_output_roll + pid_output_yaw;
 	
-	if (esc_1 < 1000) esc_1 = 1000;
-	if (esc_2 < 1000) esc_2 = 1000;
-	if (esc_3 < 1000) esc_3 = 1000;
-	if (esc_4 < 1000) esc_4 = 1000;
+		if (esc_1 < 1000) esc_1 = 1000;
+		if (esc_2 < 1000) esc_2 = 1000;
+		if (esc_3 < 1000) esc_3 = 1000;
+		if (esc_4 < 1000) esc_4 = 1000;
 	
-	if (esc_1 > 2000) esc_1 = 2000;
-	if (esc_2 > 2000) esc_2 = 2000;
-	if (esc_3 > 2000) esc_3 = 2000;
-	if (esc_4 > 2000) esc_4 = 2000;
+		if (esc_1 > 2000) esc_1 = 2000;
+		if (esc_2 > 2000) esc_2 = 2000;
+		if (esc_3 > 2000) esc_3 = 2000;
+		if (esc_4 > 2000) esc_4 = 2000;
+	}
+	else
+	{
+		esc_1 = 1000;
+		esc_2 = 1000;
+		esc_3 = 1000;
+		esc_4 = 1000;
+	}
+	
 	
 	timer_handle->Instance->CCR1 = esc_1;
 	timer_handle->Instance->CCR2 = esc_2;
 	timer_handle->Instance->CCR3 = esc_3;
 	timer_handle->Instance->CCR4 = esc_4;
+	timer_handle->Instance->CNT = 5000; //This will reset timer 4 and the ESC pulses are directly created.
 }

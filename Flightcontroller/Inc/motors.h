@@ -2,6 +2,7 @@
 #define MOTORS_H
 
 #include "stm32f1xx_hal.h"
+#include "statemachine.h"
 #include "pid.h"
 
 extern int16_t esc_1, esc_2, esc_3, esc_4;

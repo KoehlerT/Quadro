@@ -2,7 +2,7 @@
 #define LED_H
 #include "stm32f1xx_hal.h"
 
-void init_led(GPIO_TypeDef* gpio);
+void init_led();
 void led_signal();
 
 #endif // LED_H

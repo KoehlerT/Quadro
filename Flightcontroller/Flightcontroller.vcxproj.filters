@@ -285,10 +285,10 @@
     <ClInclude Include="Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h">
       <Filter>Header files\STM32Cube HAL\UART</Filter>
     </ClInclude>
-    <ClCompile Include="Src\reveiver.c">
+    <ClCompile Include="Src\receiver.c">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\receiver.c">
+    <ClCompile Include="Src\statemachine.c">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -315,6 +315,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Inc\receiver.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\statemachine.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

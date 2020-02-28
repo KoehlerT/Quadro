@@ -9,4 +9,6 @@
 extern float pid_output_pitch, pid_output_roll, pid_output_yaw;
 extern void calculate_pid();
 
+extern void reset_controllers();
+
 #endif // !PID_H

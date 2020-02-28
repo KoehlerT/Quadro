@@ -66,7 +66,7 @@ void calibrate_gyro()
 	gyro_roll_cal = gyro_pitch_cal = gyro_yaw_cal = 0;
 	for (cal_int = 0; cal_int < 2000; cal_int++)
 	{
-		//if (cal_int % 25 == 0) HAL_GPIO_TogglePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin);  //Blink
+		if (cal_int % 25 == 0) HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);  //Blink
 		read_gyro();
 		gyro_roll_cal += gyro_roll;
 		gyro_pitch_cal += gyro_pitch;

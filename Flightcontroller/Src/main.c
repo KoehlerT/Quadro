@@ -28,11 +28,11 @@
 #include "pid.h"
 #include "motors.h"
 #include "led.h"
+#include "statemachine.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -56,7 +56,6 @@ UART_HandleTypeDef huart1;
 PCD_HandleTypeDef hpcd_USB_FS;
 
 /* USER CODE BEGIN PV */
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -74,7 +73,6 @@ static void MX_TIM3_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
 /* USER CODE END 0 */
 
 /**
@@ -118,15 +116,15 @@ int main(void)
 	DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 	
 	//Initializing debug message String
-	char message[50];
-	for (int i = 0; i < 50; i++) message[i] = ' ';
-	message[48] = '\n';message[49] = '\r';
+	char message[SER_MSG_LN];
+	for (int i = 0; i < SER_MSG_LN; i++) message[i] = ' ';
+	message[SER_MSG_LN-2] = '\n'; message[SER_MSG_LN-1] = '\r';
 	HAL_Delay(500);
 	
 	//Check state of i2c
 	HAL_I2C_StateTypeDef state = HAL_I2C_GetState(&hi2c2); 
 	sprintf(message, "i2c init: %x",state);//x24: busy, x20 ready
-	HAL_UART_Transmit(&huart1, (uint8_t *)message, 30, 1000);
+	HAL_UART_Transmit(&huart1, (uint8_t *)message, SER_MSG_LN, 1000);
 	//Reset busy flag of i2c (bugfix)
 	//__HAL_RCC_GPIOB_CLK_ENABLE();
 	__HAL_RCC_I2C2_FORCE_RESET();
@@ -144,21 +142,19 @@ int main(void)
 	init_motors(&htim3);
 	
 	//Initializing LED Pins
-	init_led(GPIOB);
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
+	init_led();
 	
 	//Calibration
 	//Calibrate gyro:
     HAL_Delay(100);
 	sprintf(message, "Calibrating gyro");
-	HAL_UART_Transmit(&huart1, (uint8_t *)message, 30, 1000);
-	//calibrate_gyro();
+	HAL_UART_Transmit(&huart1, (uint8_t *)message, SER_MSG_LN, 1000);
+	calibrate_gyro();
 	
 	//Calibrate Level
 	sprintf(message, "Calibrating level");
-	HAL_UART_Transmit(&huart1, (uint8_t *)message, 30, 1000);
-	//calibrate_level();
+	HAL_UART_Transmit(&huart1, (uint8_t *)message, SER_MSG_LN, 1000);
+	calibrate_level();
 	
   /* USER CODE END 2 */
 
@@ -168,8 +164,9 @@ int main(void)
   {
 	  //Reset Clock
 	  DWT->CYCCNT = 0; //72 Cycles => 1ms => 288.000 Cycles total (72 * 4000) 4ms
-	  HAL_GPIO_TogglePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin); //Blink
-	  //led_signal();
+	  led_signal();
+	  change_state();
+	  
 	  //Read Gyroscope info
 	  read_gyro();
 	  
@@ -181,20 +178,21 @@ int main(void)
 	  set_motors(channel[2]);
 	  
 	  //Print status message via Serial
-	  for (int i = 0; i < 50; i++) message[i] = ' ';
-	  message[48] = '\n'; message[49] = '\r';
+	  for(int i = 0 ; i < SER_MSG_LN ; i++) message[i] = ' ';
+	  message[SER_MSG_LN - 2] = '\n'; message[SER_MSG_LN - 1] = '\r';
 	  
 	  uint16_t time = DWT->CYCCNT / 72;
 	  //Print Message
-	  sprintf(message, " ch1: %d, time %d us, acc(y,x) %d, %d", channel[0], time, acc_x, acc_y);
-	  HAL_UART_Transmit(&huart1, (uint8_t *)message, 50, 1000);
+	  sprintf(message, "fm:%d ch2: %d, time %d us, acc(y,x) %d, %d, gyr (r,p,y): %d,%d,%d",
+		  mode, channel[2], time, acc_x, acc_y, gyro_roll, gyro_pitch, gyro_yaw);
+	  HAL_UART_Transmit(&huart1, (uint8_t *)message, SER_MSG_LN, 1000);
 	  
 	  //Print status message via Serial
-	  for(int i = 0 ; i < 50 ; i++) message[i] = ' ';
-	  message[48] = '\n'; message[49] = '\r';
+	  for(int i = 0 ; i < SER_MSG_LN ; i++) message[i] = ' ';
+	  message[SER_MSG_LN - 2] = '\n'; message[SER_MSG_LN - 1] = '\r';
 	  //Print Message
-	  sprintf(message, "gyr (r,p,y): %d,%d,%d", gyro_roll, gyro_pitch, gyro_yaw);
-	  HAL_UART_Transmit(&huart1, (uint8_t *)message, 50, 1000);
+	  sprintf(message, "ESCs: %d, %d, %d, %d",esc_1, esc_2,esc_3,esc_4);
+	  HAL_UART_Transmit(&huart1, (uint8_t *)message, SER_MSG_LN, 1000);
 	  
 	  //Delay
 	  while(DWT->CYCCNT <= 72 * 4000);  //72 000 000Hz wait for next cycle -> every cycle 4ms
