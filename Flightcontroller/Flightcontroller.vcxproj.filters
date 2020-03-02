@@ -100,11 +100,11 @@
     <Filter Include="Header files\STM32Cube HAL\I2C">
       <UniqueIdentifier>{0d225838-0b7f-434a-b3f9-60698e553795}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source files\STM32Cube HAL\USART">
-      <UniqueIdentifier>{dc0a2ba1-8e90-482e-9beb-1fc14331d011}</UniqueIdentifier>
+    <Filter Include="Source files\STM32Cube HAL\UART">
+      <UniqueIdentifier>{161a9fd0-aec9-463f-a0f0-139b01823e23}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header files\STM32Cube HAL\USART">
-      <UniqueIdentifier>{93fe7d24-45db-487d-a58e-374b1db027bd}</UniqueIdentifier>
+    <Filter Include="Header files\STM32Cube HAL\UART">
+      <UniqueIdentifier>{709fee47-fadc-488e-9102-d122ed469611}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -261,16 +261,34 @@
     <ClInclude Include="Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h">
       <Filter>Header files\STM32Cube HAL\I2C</Filter>
     </ClInclude>
-    <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_usart.c">
-      <Filter>Source files\STM32Cube HAL\USART</Filter>
-    </ClCompile>
-    <ClInclude Include="Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_usart.h">
-      <Filter>Header files\STM32Cube HAL\USART</Filter>
-    </ClInclude>
     <ClCompile Include="Src\imu.c">
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="Src\i2c_scanner.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\pid.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_usart.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\led.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\motors.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_uart.c">
+      <Filter>Source files\STM32Cube HAL\UART</Filter>
+    </ClCompile>
+    <ClInclude Include="Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h">
+      <Filter>Header files\STM32Cube HAL\UART</Filter>
+    </ClInclude>
+    <ClCompile Include="Src\receiver.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\statemachine.c">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -279,6 +297,27 @@
       <Filter>Source files</Filter>
     </ClInclude>
     <ClInclude Include="Src\i2c_scanner.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\pid.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\pid_limits.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_usart.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\motors.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\led.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\receiver.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\statemachine.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
