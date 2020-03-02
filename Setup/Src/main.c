@@ -117,14 +117,18 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    /* USER CODE BEGIN 3 */
 	  for (int i = 0; i < SER_MSG_LN; i++) message[i] = ' ';
 	  message[SER_MSG_LN - 2] = '\n'; message[SER_MSG_LN - 1] = '\r';
 	
-	  sprintf(message, "Channel 3: %d", channel[2]);  //x24: busy, x20 ready
+	  if (channel[2] > 1980) channel[2] = 2000;
+	  if (channel[2] < 1010) channel[2] = 1000;
+	  sprintf(message, "Channels: 1: %d, 2: %d 3: %d, 4: %d, 5: %d, 6: %d", channel[0], channel[1],channel[2], channel[3], channel[4], channel[5]);       //x24: busy, x20 ready
 	  HAL_UART_Transmit(&huart1, (uint8_t *)message, SER_MSG_LN, 1000);
 	  
 	  set_motors(channel[2]);
-    /* USER CODE BEGIN 3 */
+	  
+	  HAL_Delay(4);
   }
   /* USER CODE END 3 */
 }

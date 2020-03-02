@@ -19,17 +19,18 @@ void set_motors(int16_t throttle)
 {
 	if (mode == MANUAL)
 	{
+		if (throttle > 1800) throttle = 1800;                                           //We need some room to keep full control at full throttle.
 		esc_1 = throttle - pid_output_pitch + pid_output_roll - pid_output_yaw;
 		esc_2 = throttle + pid_output_pitch + pid_output_roll + pid_output_yaw;
 		esc_3 = throttle + pid_output_pitch - pid_output_roll - pid_output_yaw;
 		esc_4 = throttle - pid_output_pitch - pid_output_roll + pid_output_yaw;
 	
-		if (esc_1 < 1000) esc_1 = 1000;
-		if (esc_2 < 1000) esc_2 = 1000;
-		if (esc_3 < 1000) esc_3 = 1000;
-		if (esc_4 < 1000) esc_4 = 1000;
+		if (esc_1 < 1100) esc_1 = 1100; //Keep the motors running
+		if (esc_2 < 1100) esc_2 = 1100;
+		if (esc_3 < 1100) esc_3 = 1100;
+		if (esc_4 < 1100) esc_4 = 1100;
 	
-		if (esc_1 > 2000) esc_1 = 2000;
+		if (esc_1 > 2000) esc_1 = 2000; //Limit the pulses
 		if (esc_2 > 2000) esc_2 = 2000;
 		if (esc_3 > 2000) esc_3 = 2000;
 		if (esc_4 > 2000) esc_4 = 2000;
@@ -41,7 +42,10 @@ void set_motors(int16_t throttle)
 		esc_3 = 1000;
 		esc_4 = 1000;
 	}
-	
+	if (mode == SETUP)
+	{
+		esc_1 = esc_2 = esc_3 = esc_4 = throttle;
+	}
 	
 	timer_handle->Instance->CCR1 = esc_1;
 	timer_handle->Instance->CCR2 = esc_2;

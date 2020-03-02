@@ -15,6 +15,10 @@ void led_signal()
 	cyclecount++;
 	if (cyclecount % 100 == 0) //Blink onboard led
 		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13); 
+	if (cyclecount % 50 == 0)
+		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_13);
+	if (cyclecount % 200 == 0)
+		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_12);
 	if (cyclecount >= 1000) //Reset after 4 seconds...
 		cyclecount = 0;
 }

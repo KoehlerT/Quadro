@@ -24,5 +24,5 @@ void set_motors(int16_t throttle)
 	timer_handle->Instance->CCR2 = esc_2;
 	timer_handle->Instance->CCR3 = esc_3;
 	timer_handle->Instance->CCR4 = esc_4;
-	timer_handle->Instance->CNT = 5000; //This will reset timer 4 and the ESC pulses are directly created.
+	//timer_handle->Instance->CNT = 5000; //This will reset timer 4 and the ESC pulses are directly created.
 }

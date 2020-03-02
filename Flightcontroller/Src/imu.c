@@ -147,7 +147,7 @@ int8_t read_gyro()
 	if (level_calibration_on == 0)
 	{
 		acc_y -= acc_pitch_cal_value;
-		acc_z -= acc_roll_cal_value;
+		acc_x -= acc_roll_cal_value;
 	}
 	if (cal_int >= 2000)
 	{

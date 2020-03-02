@@ -8,7 +8,8 @@ enum FLIGHTMODE;
 typedef enum {
 	IDLE   = 0,
 	READY  = 1,
-	MANUAL = 2
+	MANUAL = 2,
+	SETUP = 3,
 }FLIGHTMODE;
 
 extern uint8_t mode;
