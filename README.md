@@ -1,5 +1,5 @@
 # Quadro
-This is a multicopter flightcontroller that is basically a copy of Joop Brokkings YMFC-AL (brokking.net). Adapted for use with VisualStudio, VisualGDB and the STM32CubeMX utillitys.
+This is a multicopter flightcontroller that is basically a copy of Joop Brokkings YMFC-AL [brokking.net](http://www.brokking.net/ymfc-32_main.html). Adapted for use with VisualStudio, VisualGDB and the STM32CubeMX utillitys.
 
 The goal is to develop a multicopter flightcontroller that can be interfaced with a raspberry pi and is highly customizable.
 
