@@ -80,6 +80,10 @@ void calibrate_gyro()
 
 void calibrate_level()
 {
+	acc_pitch_cal_value = 160;
+	acc_roll_cal_value = -81;
+	return;
+	
 	level_calibration_on = 1;
 	acc_pitch_cal_value = acc_roll_cal_value = 0;
 	int err = 0;
@@ -99,7 +103,7 @@ void calibrate_level()
 	//if (err < 80) //Write calibration data to eeprom
 	if(err >= 80)
 	{
-		err++; //Breakpoint...
+		err ++; //Breakpoint...
 	}
 	
 	level_calibration_on = 0;
