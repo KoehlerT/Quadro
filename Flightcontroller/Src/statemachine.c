@@ -1,6 +1,15 @@
 #include "statemachine.h"
+#include "led.h"
 
 uint8_t mode = IDLE;
+uint8_t error = NO_ERR;
+
+uint8_t gPulses, yPulses;
+
+void init_state()
+{
+	init_led();
+}
 
 void change_state()
 {
@@ -22,4 +31,35 @@ void change_state()
 	{
 		mode = SETUP;
 	}
+	
+	switch (mode)
+	{
+	case IDLE: gPulses = 1; break;
+	case MANUAL: gPulses = 2; break;
+	case SETUP: gPulses = 5; break;
+	case CALIBRATE: yPulses= 100; break;
+	default:
+		gPulses = 0;
+	}
+}
+
+
+void set_error(CONTR_ERR err)
+{
+	if (err > error)
+		error = err;
+	//GET LED
+	switch (error)
+	{
+	case LOW_BATTERY: yPulses = 1; break;
+	case LOOPTIME_ERR: yPulses = 2; break;
+	case CAL_ERR: yPulses = 3; break;
+	default:
+		yPulses = 0;
+	}
+}
+
+void signal_state()
+{
+	led_signal(gPulses, yPulses);
 }
