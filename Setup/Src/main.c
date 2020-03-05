@@ -20,12 +20,12 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "motors.h"
-#include "receiver.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+//#include "motors.h"
+//#include "receiver.h"
+#include "baro.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -43,6 +43,9 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+I2C_HandleTypeDef hi2c1;
+I2C_HandleTypeDef hi2c2;
+
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 
@@ -56,6 +59,8 @@ UART_HandleTypeDef huart1;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART1_UART_Init(void);
+static void MX_I2C1_Init(void);
+static void MX_I2C2_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_TIM3_Init(void);
 /* USER CODE BEGIN PFP */
@@ -81,7 +86,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+x  HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -97,6 +102,8 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART1_UART_Init();
+  MX_I2C1_Init();
+  MX_I2C2_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
@@ -108,8 +115,16 @@ int main(void)
 	sprintf(message, "Setup start"); //x24: busy, x20 ready
 	HAL_UART_Transmit(&huart1, (uint8_t *)message, SER_MSG_LN, 1000);
 	
-	init_motors(&htim3);
-	init_receiver(&htim2);
+	//init_motors(&htim3);
+	//init_receiver(&htim2);
+	//Reset i2c
+	__HAL_RCC_I2C2_FORCE_RESET();
+	HAL_Delay(1000);
+	__HAL_RCC_I2C2_RELEASE_RESET();
+	MX_I2C2_Init();
+	HAL_Delay(100);
+	init_baro(&hi2c2);
+	int loopcount = 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -117,16 +132,18 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+
     /* USER CODE BEGIN 3 */
+	  
+	  //set_motors(channel[2]);
+	  read_baro();
+	  
 	  for (int i = 0; i < SER_MSG_LN; i++) message[i] = ' ';
 	  message[SER_MSG_LN - 2] = '\n'; message[SER_MSG_LN - 1] = '\r';
 	
-	  if (channel[2] > 1980) channel[2] = 2000;
-	  if (channel[2] < 1010) channel[2] = 1000;
-	  sprintf(message, "Channels: 1: %d, 2: %d 3: %d, 4: %d, 5: %d, 6: %d", channel[0], channel[1],channel[2], channel[3], channel[4], channel[5]);       //x24: busy, x20 ready
-	  HAL_UART_Transmit(&huart1, (uint8_t *)message, SER_MSG_LN, 1000);
-	  
-	  set_motors(channel[2]);
+	  //sprintf(message, "Channels: 1: %d, 2: %d 3: %d, 4: %d, 5: %d, 6: %d", channel[0], channel[1], channel[2], channel[3], channel[4], channel[5]);        //x24: busy, x20 ready
+	  sprintf(message, "pressure: %d", (int)(actual_pressure*1000));
+	  if (loopcount ++ % 10 == 0)HAL_UART_Transmit(&huart1, (uint8_t *)message, SER_MSG_LN, 1000);
 	  
 	  HAL_Delay(4);
   }
@@ -168,6 +185,74 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief I2C1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C1_Init(void)
+{
+
+  /* USER CODE BEGIN I2C1_Init 0 */
+
+  /* USER CODE END I2C1_Init 0 */
+
+  /* USER CODE BEGIN I2C1_Init 1 */
+
+  /* USER CODE END I2C1_Init 1 */
+  hi2c1.Instance = I2C1;
+  hi2c1.Init.ClockSpeed = 100000;
+  hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c1.Init.OwnAddress2 = 0;
+  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C1_Init 2 */
+
+  /* USER CODE END I2C1_Init 2 */
+
+}
+
+/**
+  * @brief I2C2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C2_Init(void)
+{
+
+  /* USER CODE BEGIN I2C2_Init 0 */
+
+  /* USER CODE END I2C2_Init 0 */
+
+  /* USER CODE BEGIN I2C2_Init 1 */
+
+  /* USER CODE END I2C2_Init 1 */
+  hi2c2.Instance = I2C2;
+  hi2c2.Init.ClockSpeed = 400000;
+  hi2c2.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  hi2c2.Init.OwnAddress1 = 0;
+  hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c2.Init.OwnAddress2 = 0;
+  hi2c2.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c2.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C2_Init 2 */
+
+  /* USER CODE END I2C2_Init 2 */
+
 }
 
 /**
