@@ -77,6 +77,7 @@
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ItemGroup>
+    <ClCompile Include="Src\baro.c" />
     <ClCompile Include="Src\motors.c" />
     <ClCompile Include="Src\receiver.c" />
     <ClCompile Include="Src\stm32f1xx_it.c" />
@@ -96,6 +97,7 @@
     <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_flash.c" />
     <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_flash_ex.c" />
     <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_gpio.c" />
+    <ClInclude Include="Inc\baro.h" />
     <None Include="stm32.props" />
     <ClCompile Include="$(BSP_ROOT)\STM32F1xxxx\StartupFiles\startup_stm32f103xb.c" />
     <ClInclude Include="Inc\motors.h" />
@@ -126,5 +128,7 @@
     <None Include="Setup-Debug.vgdbsettings" />
     <None Include="Setup-Release.vgdbsettings" />
     <None Include="stm32.xml" />
+    <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_i2c.c" />
+    <ClInclude Include="Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h" />
   </ItemGroup>
 </Project>

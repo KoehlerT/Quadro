@@ -94,6 +94,12 @@
     <Filter Include="VisualGDB settings">
       <UniqueIdentifier>{08c6de5e-1b28-4048-a7b2-e11ad0ce45e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source files\STM32Cube HAL\I2C">
+      <UniqueIdentifier>{35499280-1bc0-440b-8b69-dd892d0a0b9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\STM32Cube HAL\I2C">
+      <UniqueIdentifier>{4c6d1aa9-c897-402b-8665-2acb303a2a83}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\stm32f1xx_it.c">
@@ -237,12 +243,24 @@
     <ClCompile Include="Src\receiver.c">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_i2c.c">
+      <Filter>Source files\STM32Cube HAL\I2C</Filter>
+    </ClCompile>
+    <ClInclude Include="Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h">
+      <Filter>Header files\STM32Cube HAL\I2C</Filter>
+    </ClInclude>
+    <ClCompile Include="Src\baro.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Inc\motors.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Inc\receiver.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\baro.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
