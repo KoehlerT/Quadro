@@ -27,7 +27,6 @@
 #include "receiver.h"
 #include "pid.h"
 #include "motors.h"
-#include "led.h"
 #include "statemachine.h"
 /* USER CODE END Includes */
 
@@ -114,6 +113,7 @@ int main(void)
 	CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
 	DWT->CYCCNT = 0;
 	DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+	init_state();
 	
 	//Initializing debug message String
 	char message[SER_MSG_LN];
@@ -141,9 +141,6 @@ int main(void)
 	//Initializing Motor PWM Pulse generation
 	init_motors(&htim3);
 	
-	//Initializing LED Pins
-	init_led();
-	
 	//Calibration
 	//Calibrate gyro:
     HAL_Delay(100);
@@ -166,8 +163,8 @@ int main(void)
   {
 	  //Reset Clock
 	  DWT->CYCCNT = 0; //72 Cycles => 1ms => 288.000 Cycles total (72 * 4000) 4ms
-	  led_signal();
 	  change_state();
+	  signal_state();
 	  
 	  //Read Gyroscope info
 	  read_gyro();
@@ -197,6 +194,7 @@ int main(void)
 	  HAL_UART_Transmit(&huart1, (uint8_t *)message, SER_MSG_LN, 1000);
 	  
 	  //Delay
+	  if(DWT->CYCCNT >= 72 * 3900) set_error(LOOPTIME_ERR);
 	  while(DWT->CYCCNT <= 72 * 4000);  //72 000 000Hz wait for next cycle -> every cycle 4ms
     /* USER CODE END WHILE */
 

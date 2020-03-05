@@ -3,7 +3,7 @@
 #include "stm32f1xx_hal.h"
 
 void init_led();
-void led_signal();
+void led_signal(int8_t gPulses, int8_t yPulses);
 
 #endif // LED_H
 

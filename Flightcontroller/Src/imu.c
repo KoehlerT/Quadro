@@ -103,7 +103,7 @@ void calibrate_level()
 	//if (err < 80) //Write calibration data to eeprom
 	if(err >= 80)
 	{
-		err ++; //Breakpoint...
+		set_error(CAL_ERR);
 	}
 	
 	level_calibration_on = 0;
