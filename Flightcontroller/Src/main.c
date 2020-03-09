@@ -28,6 +28,7 @@
 #include "pid.h"
 #include "motors.h"
 #include "statemachine.h"
+#include "send_info.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -116,15 +117,8 @@ int main(void)
 	init_state();
 	
 	//Initializing debug message String
-	char message[SER_MSG_LN];
-	for (int i = 0; i < SER_MSG_LN; i++) message[i] = ' ';
-	message[SER_MSG_LN-2] = '\n'; message[SER_MSG_LN-1] = '\r';
-	HAL_Delay(500);
+	init_info(&huart1);
 	
-	//Check state of i2c
-	HAL_I2C_StateTypeDef state = HAL_I2C_GetState(&hi2c2); 
-	sprintf(message, "i2c init: %x",state);//x24: busy, x20 ready
-	HAL_UART_Transmit(&huart1, (uint8_t *)message, SER_MSG_LN, 1000);
 	//Reset busy flag of i2c (bugfix)
 	//__HAL_RCC_GPIOB_CLK_ENABLE();
 	__HAL_RCC_I2C2_FORCE_RESET();
@@ -144,13 +138,9 @@ int main(void)
 	//Calibration
 	//Calibrate gyro:
     HAL_Delay(100);
-	sprintf(message, "Calibrating gyro");
-	HAL_UART_Transmit(&huart1, (uint8_t *)message, SER_MSG_LN, 1000);
 	calibrate_gyro();
 	
 	//Calibrate Level
-	sprintf(message, "Calibrating level");
-	HAL_UART_Transmit(&huart1, (uint8_t *)message, SER_MSG_LN, 1000);
 	calibrate_level();
 	
 	
@@ -176,22 +166,11 @@ int main(void)
 	  //throttle = channel 2
 	  set_motors(channel[2]);
 	  
-	  //Print status message via Serial
-	  for(int i = 0 ; i < SER_MSG_LN ; i++) message[i] = ' ';
-	  message[SER_MSG_LN - 2] = '\n'; message[SER_MSG_LN - 1] = '\r';
+	  //Print information
+	  send_info();
 	  
 	  uint16_t time = DWT->CYCCNT / 72;
 	  //Print Message
-	  sprintf(message, "fm:%d ch2: %d, time %d us, acc(y,x) %d, %d, gyr (r,p,y): %d,%d,%d",
-		  mode, channel[2], time, acc_x, acc_y, gyro_roll, gyro_pitch, gyro_yaw);
-	  HAL_UART_Transmit(&huart1, (uint8_t *)message, SER_MSG_LN, 1000);
-	  
-	  //Print status message via Serial
-	  for(int i = 0 ; i < SER_MSG_LN ; i++) message[i] = ' ';
-	  message[SER_MSG_LN - 2] = '\n'; message[SER_MSG_LN - 1] = '\r';
-	  //Print Message
-	  sprintf(message, "ESCs: %d, %d, %d, %d",esc_1, esc_2,esc_3,esc_4);
-	  HAL_UART_Transmit(&huart1, (uint8_t *)message, SER_MSG_LN, 1000);
 	  
 	  //Delay
 	  if(DWT->CYCCNT >= 72 * 3900) set_error(LOOPTIME_ERR);
@@ -440,7 +419,7 @@ static void MX_USART1_UART_Init(void)
 
   /* USER CODE END USART1_Init 1 */
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 115200;
+  huart1.Init.BaudRate = 9600;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;

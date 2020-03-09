@@ -83,6 +83,7 @@
     <ClCompile Include="Src\motors.c" />
     <ClCompile Include="Src\pid.c" />
     <ClCompile Include="Src\receiver.c" />
+    <ClCompile Include="Src\send_info.c" />
     <ClCompile Include="Src\statemachine.c" />
     <ClCompile Include="Src\stm32f1xx_it.c" />
     <ClCompile Include="Src\stm32f1xx_hal_msp.c" />
@@ -110,6 +111,7 @@
     <ClInclude Include="Inc\statemachine.h" />
     <ClInclude Include="Src\i2c_scanner.h" />
     <ClInclude Include="Inc\receiver.h" />
+    <ClInclude Include="Inc\send_info.h" />
     <None Include="stm32.props" />
     <ClCompile Include="$(BSP_ROOT)\STM32F1xxxx\StartupFiles\startup_stm32f103xb.c" />
     <ClInclude Include="Inc\imu.h" />
