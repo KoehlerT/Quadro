@@ -291,6 +291,9 @@
     <ClCompile Include="Src\statemachine.c">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="Src\send_info.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Inc\imu.h">
@@ -318,6 +321,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Inc\statemachine.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\send_info.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
