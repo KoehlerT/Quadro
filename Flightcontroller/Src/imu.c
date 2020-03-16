@@ -1,5 +1,7 @@
 #include "imu.h"
 
+//#define cal_level
+
 //Public gyroscope variables
 int16_t gyro_axis[3];
 int16_t acc_x, acc_y, acc_z;
@@ -80,10 +82,11 @@ void calibrate_gyro()
 
 void calibrate_level()
 {
-	acc_pitch_cal_value = 160;
-	acc_roll_cal_value = -81;
+#ifndef cal_level
+	acc_pitch_cal_value = 85;
+	acc_roll_cal_value = -114;
 	return;
-	
+#else
 	level_calibration_on = 1;
 	acc_pitch_cal_value = acc_roll_cal_value = 0;
 	int err = 0;
@@ -120,6 +123,8 @@ void calibrate_level()
 	angle_pitch = angle_pitch_acc;//Set the gyro pitch angle equal to the accelerometer pitch angle when the quadcopter is started.
 	angle_roll = angle_roll_acc;
 	DWT->CYCCNT = 0; //Reset clock
+#endif
+
 }
 
 int8_t read_gyro()
