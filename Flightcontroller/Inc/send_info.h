@@ -6,6 +6,7 @@
 #include "imu.h"
 #include "receiver.h"
 #include "motors.h"
+#include "adc.h"
 
 void init_info(UART_HandleTypeDef* uart);
 

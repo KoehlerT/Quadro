@@ -106,6 +106,12 @@
     <Filter Include="Header files\STM32Cube HAL\UART">
       <UniqueIdentifier>{709fee47-fadc-488e-9102-d122ed469611}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source files\STM32Cube HAL\ADC">
+      <UniqueIdentifier>{f19f5e2c-d884-41ee-9f8a-9d308bca6950}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\STM32Cube HAL\ADC">
+      <UniqueIdentifier>{f370e85d-ff6d-4f9f-97b0-a8922014f37f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\stm32f1xx_it.c">
@@ -294,6 +300,21 @@
     <ClCompile Include="Src\send_info.c">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="Src\adc.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_adc.c">
+      <Filter>Source files\STM32Cube HAL\ADC</Filter>
+    </ClCompile>
+    <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_adc_ex.c">
+      <Filter>Source files\STM32Cube HAL\ADC</Filter>
+    </ClCompile>
+    <ClInclude Include="Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_adc.h">
+      <Filter>Header files\STM32Cube HAL\ADC</Filter>
+    </ClInclude>
+    <ClInclude Include="Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_adc_ex.h">
+      <Filter>Header files\STM32Cube HAL\ADC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Inc\imu.h">
@@ -324,6 +345,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Inc\send_info.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\adc.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
