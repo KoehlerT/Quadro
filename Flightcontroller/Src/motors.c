@@ -13,7 +13,9 @@ void init_motors(TIM_HandleTypeDef* handle)
 	HAL_TIM_PWM_Start(timer_handle, TIM_CHANNEL_2);
 	HAL_TIM_PWM_Start(timer_handle, TIM_CHANNEL_3);
 	HAL_TIM_PWM_Start(timer_handle, TIM_CHANNEL_4);
-}
+	
+	//timer_handle->Instance->CCR1 = 1;
+	}
 
 void set_motors(int16_t throttle)
 {
