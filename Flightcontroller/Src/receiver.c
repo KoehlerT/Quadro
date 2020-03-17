@@ -20,7 +20,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef* htim)
 		if (measured_time > 3000)channel_select_counter = 0;
 		else
 		{
-			channel[channel_select_counter] = (int ) (measured_time * 1.58f);//??
+			channel[channel_select_counter] = (int ) (measured_time);
 			channel_select_counter++;
 		}
 	}
