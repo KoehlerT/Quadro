@@ -78,7 +78,7 @@
   </ImportGroup>
   <ItemGroup>
     <ClCompile Include="Src\adc.c" />
-    <ClCompile Include="Src\i2c_scanner.c" />
+    <ClCompile Include="Src\baro.c" />
     <ClCompile Include="Src\imu.c" />
     <ClCompile Include="Src\led.c" />
     <ClCompile Include="Src\motors.c" />
@@ -106,12 +106,12 @@
     <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_flash_ex.c" />
     <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_gpio.c" />
     <ClInclude Include="Inc\adc.h" />
+    <ClInclude Include="Inc\baro.h" />
     <ClInclude Include="Inc\led.h" />
     <ClInclude Include="Inc\motors.h" />
     <ClInclude Include="Inc\pid.h" />
     <ClInclude Include="Inc\pid_limits.h" />
     <ClInclude Include="Inc\statemachine.h" />
-    <ClInclude Include="Src\i2c_scanner.h" />
     <ClInclude Include="Inc\receiver.h" />
     <ClInclude Include="Inc\send_info.h" />
     <None Include="stm32.props" />

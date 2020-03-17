@@ -270,9 +270,6 @@
     <ClCompile Include="Src\imu.c">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\i2c_scanner.c">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="Src\pid.c">
       <Filter>Source files</Filter>
     </ClCompile>
@@ -315,13 +312,13 @@
     <ClInclude Include="Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_adc_ex.h">
       <Filter>Header files\STM32Cube HAL\ADC</Filter>
     </ClInclude>
+    <ClCompile Include="Src\baro.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Inc\imu.h">
       <Filter>Source files</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\i2c_scanner.h">
-      <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Inc\pid.h">
       <Filter>Header files</Filter>
@@ -348,6 +345,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Inc\adc.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\baro.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

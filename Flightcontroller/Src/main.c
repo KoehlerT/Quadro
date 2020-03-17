@@ -30,6 +30,7 @@
 #include "motors.h"
 #include "statemachine.h"
 #include "send_info.h"
+#include "baro.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -131,13 +132,16 @@ int main(void)
 	__HAL_RCC_I2C2_RELEASE_RESET();
 	MX_I2C2_Init();
 	
-	//initialize Gyro
+	//initialise Gyro
 	init_gyro(&hi2c2);
 	
-	//Initializing Receiver input handling
+	//initialise Baro
+	init_baro(&hi2c2);
+	
+	//Initialising Receiver input handling
 	init_receiver(&htim2);
 	
-	//Initializing Motor PWM Pulse generation
+	//Initialising Motor PWM Pulse generation
 	init_motors(&htim3);
 	
 	//Initialising adc for battery voltage reading
@@ -164,8 +168,9 @@ int main(void)
 	  change_state();
 	  signal_state();
 	  
-	  //Read Gyroscope info
+	  //Read Sensor info
 	  read_gyro();
+	  read_baro();
 	  
 	  //Read adc
 	  //poll_adc_value();

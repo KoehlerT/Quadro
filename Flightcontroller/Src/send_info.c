@@ -31,6 +31,10 @@ void send_info()
 		buffer[0x01] = error;
 		buffer[0x02] = (int8_t)angle_roll;
 		buffer[0x03] = (int8_t)angle_pitch;
+		buffer[0x04] = temperature * 10;
+		//buffer[0x05] empty
+		buffer[0x06] = (uint16_t)(altitude_meters + 1000);
+		buffer[0x07] = ((uint16_t)(altitude_meters +1000)) >>8;
 		
 		buffer[0x0B] = (uint8_t)battery_voltage * 10;
 		
