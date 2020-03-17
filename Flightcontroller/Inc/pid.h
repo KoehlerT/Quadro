@@ -1,7 +1,7 @@
 #ifndef PID_H
 #define PID_H
 
-#include "stm32f1xx_hal.h"
+#include "stm32f4xx_hal.h"
 #include "imu.h"
 #include "receiver.h"
 

@@ -1,7 +1,7 @@
 #ifndef IMU_H
 #define IMU_H
 
-#include "stm32f1xx_hal.h"
+#include "stm32f4xx_hal.h"
 #include "statemachine.h"
 #define IMU_address 0x68 << 1
 
