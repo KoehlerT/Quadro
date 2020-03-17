@@ -1,7 +1,7 @@
 #ifndef MOTORS_H
 #define MOTORS_H
 
-#include "stm32f1xx_hal.h"
+#include "stm32f4xx_hal.h"
 #include "statemachine.h"
 #include "pid.h"
 
