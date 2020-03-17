@@ -291,12 +291,45 @@
     <ClCompile Include="Src\imu.c">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="Src\led.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\statemachine.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\receiver.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\pid.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\motors.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\Users\Tim\Downloads\Quadro-master\Quadro-master\Flightcontroller\Inc\statemachine.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Inc\imu.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\statemachine.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\pid_limits.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\led.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\motors.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\pid.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\receiver.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
