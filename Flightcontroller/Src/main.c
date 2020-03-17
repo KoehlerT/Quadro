@@ -24,6 +24,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "imu.h"
+#include "statemachine.h"
+#include "receiver.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -115,12 +117,13 @@ int main(void)
 	DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 	
 	//HAL_GPIO_Init(GPIOC,)
-	__HAL_RCC_I2C2_FORCE_RESET();
+	/*__HAL_RCC_I2C2_FORCE_RESET();
 	HAL_Delay(1000);
-	__HAL_RCC_I2C2_RELEASE_RESET();
-	MX_I2C2_Init();
+	__HAL_RCC_I2C2_RELEASE_RESET();*/
+	//MX_I2C2_Init();
 	
 	init_gyro(&hi2c2);
+	init_receiver(&htim2);
 	int i = 0;
   /* USER CODE END 2 */
 
@@ -131,10 +134,14 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  DWT->CYCCNT = 0;  //72 Cycles => 1ms => 288.000 Cycles total (72 * 4000) 4ms
+	  
 	  read_gyro();
 	  if (i++%50 == 0)
 	    HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-	  HAL_Delay(4);
+	  //Delay
+	 if(DWT->CYCCNT >= 100 * 3900) set_error(LOOPTIME_ERR);
+	 while (DWT->CYCCNT <= 100 * 4000) ;  //100 000 000Hz wait for next cycle -> every cycle 4ms
   }
   /* USER CODE END 3 */
 }
@@ -277,6 +284,7 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 0 */
 
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
   TIM_IC_InitTypeDef sConfigIC = {0};
 
@@ -284,11 +292,20 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 100;
+  htim2.Init.Prescaler = 99;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 0xFFFF;
+  htim2.Init.Period = 0xFFFFFFFF;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
   if (HAL_TIM_IC_Init(&htim2) != HAL_OK)
   {
     Error_Handler();
