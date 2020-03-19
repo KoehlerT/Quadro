@@ -94,20 +94,8 @@
     <Filter Include="VisualGDB settings">
       <UniqueIdentifier>{4bcc258f-0b51-4a48-a0a9-621bc03f63f2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source files\STM32Cube HAL\ADC">
-      <UniqueIdentifier>{fb1d732a-6a52-4f00-b67b-a7f53ab852b6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source files\STM32Cube HAL\UART">
-      <UniqueIdentifier>{72621d84-c932-4a31-9f3f-a1135c976b52}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source files\STM32Cube HAL\I2C">
       <UniqueIdentifier>{baf40729-2ceb-45eb-b004-888b65ba690e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header files\STM32Cube HAL\ADC">
-      <UniqueIdentifier>{a962cdfd-f6fd-4130-ba63-9b1124a14fe3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header files\STM32Cube HAL\UART">
-      <UniqueIdentifier>{0bfa5413-15dc-43cd-bb7d-aa22c11a6cb6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header files\STM32Cube HAL\I2C">
       <UniqueIdentifier>{e075bdc0-99df-40ae-8815-f2c94c6e847a}</UniqueIdentifier>
@@ -258,30 +246,12 @@
     <None Include="stm32.xml">
       <Filter>VisualGDB settings</Filter>
     </None>
-    <ClCompile Include="Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_adc.c">
-      <Filter>Source files\STM32Cube HAL\ADC</Filter>
-    </ClCompile>
-    <ClCompile Include="Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_adc_ex.c">
-      <Filter>Source files\STM32Cube HAL\ADC</Filter>
-    </ClCompile>
-    <ClCompile Include="Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_uart.c">
-      <Filter>Source files\STM32Cube HAL\UART</Filter>
-    </ClCompile>
     <ClCompile Include="Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_i2c.c">
       <Filter>Source files\STM32Cube HAL\I2C</Filter>
     </ClCompile>
     <ClCompile Include="Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_i2c_ex.c">
       <Filter>Source files\STM32Cube HAL\I2C</Filter>
     </ClCompile>
-    <ClInclude Include="Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_adc.h">
-      <Filter>Header files\STM32Cube HAL\ADC</Filter>
-    </ClInclude>
-    <ClInclude Include="Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_adc_ex.h">
-      <Filter>Header files\STM32Cube HAL\ADC</Filter>
-    </ClInclude>
-    <ClInclude Include="Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h">
-      <Filter>Header files\STM32Cube HAL\UART</Filter>
-    </ClInclude>
     <ClInclude Include="Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_i2c.h">
       <Filter>Header files\STM32Cube HAL\I2C</Filter>
     </ClInclude>
