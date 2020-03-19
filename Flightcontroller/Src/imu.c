@@ -1,5 +1,7 @@
 #include "imu.h"
 
+//#define cal_level
+
 //Public gyroscope variables
 int16_t gyro_axis[3];
 int16_t acc_x, acc_y, acc_z;
@@ -28,11 +30,11 @@ int8_t init_gyro(I2C_HandleTypeDef* handle)
 {
 	imu_handle = handle;
 	//Check if device is ready
-	HAL_StatusTypeDef state = HAL_I2C_IsDeviceReady(handle, IMU_address, 2, 100);
+	HAL_StatusTypeDef state = HAL_I2C_IsDeviceReady(handle, IMU_address, 2, 10);
 	if (state != HAL_OK)
 	{
-		cal_int = 0;
-		//return -1; //Device not ready
+		//hardwareFaultRegister |= 0b01000000;
+		return -1; //Device not ready
 	}
 	
 	//Set Up Mup6050
@@ -80,10 +82,11 @@ void calibrate_gyro()
 
 void calibrate_level()
 {
-	acc_pitch_cal_value = 160;
-	acc_roll_cal_value = -81;
+#ifndef cal_level
+	acc_pitch_cal_value = 85;
+	acc_roll_cal_value = -114;
 	return;
-	
+#else
 	level_calibration_on = 1;
 	acc_pitch_cal_value = acc_roll_cal_value = 0;
 	int err = 0;
@@ -120,6 +123,8 @@ void calibrate_level()
 	angle_pitch = angle_pitch_acc;//Set the gyro pitch angle equal to the accelerometer pitch angle when the quadcopter is started.
 	angle_roll = angle_roll_acc;
 	DWT->CYCCNT = 0; //Reset clock
+#endif
+
 }
 
 int8_t read_gyro()
@@ -133,6 +138,7 @@ int8_t read_gyro()
 	if (status != HAL_OK)
 	{
 		uint32_t error =  HAL_I2C_GetError(imu_handle);
+		//hardwareFaultRegister |= 0b01000000;
 		return -1;
 	}
 	acc_y = buffer[0] << 8 | buffer[1];
