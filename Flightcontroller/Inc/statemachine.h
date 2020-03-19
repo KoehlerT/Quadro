@@ -23,7 +23,9 @@ typedef enum
 
 extern uint8_t mode;
 extern uint8_t error;
-extern void init_state();
+extern uint8_t hardwareFaultRegister; // I2C Timeout, IMU Err, Baro Err, Comp Err, Receiver Err, Transmit Err,0,0
+
+void init_state();
 void change_state();
 void set_error(CONTR_ERR error);
 void signal_state();

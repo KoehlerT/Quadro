@@ -3,6 +3,7 @@
 
 uint8_t mode = IDLE;
 uint8_t error = NO_ERR;
+uint8_t hardwareFaultRegister;
 
 uint8_t gPulses, yPulses;
 
