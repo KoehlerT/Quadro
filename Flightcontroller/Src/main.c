@@ -143,7 +143,7 @@ int main(void)
 	  DWT->CYCCNT = 0;  //100 Cycles => 1ms => 400.000 Cycles total (100 * 4000) 4ms
 	  change_state();
 	  signal_state();
-	  send_info();
+	  send_info(&huart1);
 	  
 	  read_gyro();
 	  read_baro();
