@@ -4,24 +4,24 @@
 uint16_t crc16(uint16_t crc, uint8_t* ptr, int length);
 
 uint8_t transmitIndex = 0;
-UART_HandleTypeDef* uart_hand;
+//UART_HandleTypeDef* uart_hand;
 uint8_t buffer[BUFFER_LENGTH];
 
 void init_info(UART_HandleTypeDef* uart)
 {
 	
-	uart_hand = uart;
-	HAL_UART_Init(uart_hand);
+	//uart = uart;
+	HAL_UART_Init(uart);
 	for (int i = 0; i < BUFFER_LENGTH-2; i++)
 		buffer[i] = 0;
 	buffer[BUFFER_LENGTH - 2] = '\n';
 	buffer[BUFFER_LENGTH - 1] = '\r';
-	HAL_StatusTypeDef state = HAL_UART_Transmit(uart_hand, buffer, 40, 1000);
+	HAL_StatusTypeDef state = HAL_UART_Transmit(uart, buffer, 40, 1000);
 	
 	
 }
 
-void send_info()
+void send_info(UART_HandleTypeDef* uart)
 {
 	//A Package of telemetry data is set up once. Then transmittet for a number of cycles
 	if (transmitIndex >= BUFFER_LENGTH)
@@ -65,7 +65,7 @@ void send_info()
 	}else
 	{
 		//Transmit the next 4 bytes
-		HAL_StatusTypeDef state = HAL_UART_Transmit(uart_hand, &buffer[transmitIndex], 4, 100);
+		HAL_StatusTypeDef state = HAL_UART_Transmit(uart, &buffer[transmitIndex], 4, 100);
 		if(state != HAL_OK)
 			hardwareFaultRegister |= 0b00001000;
 		transmitIndex += 4;

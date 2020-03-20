@@ -9,9 +9,9 @@
 //#include "adc.h"
 #include "baro.h"
 
-void init_info(UART_HandleTypeDef* uart);
+void init_info(UART_HandleTypeDef*);
 void USART1_IRQHandler(void);
-void send_info();
+void send_info(UART_HandleTypeDef*);
 
 #endif // SEND_INFO_H
 
