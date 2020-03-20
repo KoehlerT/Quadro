@@ -4,16 +4,20 @@
 uint16_t crc16(uint16_t crc, uint8_t* ptr, int length);
 
 uint8_t transmitIndex = 0;
-UART_HandleTypeDef* handle;
+UART_HandleTypeDef* uart_hand;
 uint8_t buffer[BUFFER_LENGTH];
 
 void init_info(UART_HandleTypeDef* uart)
 {
-	handle = uart;
+	
+	uart_hand = uart;
+	HAL_UART_Init(uart_hand);
 	for (int i = 0; i < BUFFER_LENGTH-2; i++)
 		buffer[i] = 0;
 	buffer[BUFFER_LENGTH - 2] = '\n';
 	buffer[BUFFER_LENGTH - 1] = '\r';
+	HAL_StatusTypeDef state = HAL_UART_Transmit(uart_hand, buffer, 40, 1000);
+	
 	
 }
 
@@ -36,7 +40,7 @@ void send_info()
 		buffer[0x06] = (uint16_t)(altitude_meters + 1000);
 		buffer[0x07] = ((uint16_t)(altitude_meters +1000)) >>8;
 		
-		buffer[0x0B] = (uint8_t)battery_voltage * 10;
+		//buffer[0x0B] = (uint8_t)battery_voltage * 10;
 		
 		buffer[0x14] = esc_1;
 		buffer[0x15] = esc_1 >> 8;
@@ -61,11 +65,16 @@ void send_info()
 	}else
 	{
 		//Transmit the next 4 bytes
-		HAL_StatusTypeDef state = HAL_UART_Transmit(handle, &buffer[transmitIndex], 4, 100);
+		HAL_StatusTypeDef state = HAL_UART_Transmit(uart_hand, &buffer[transmitIndex], 4, 100);
 		if(state != HAL_OK)
 			hardwareFaultRegister |= 0b00001000;
 		transmitIndex += 4;
 	}
+}
+
+void USART1_IRQHandler(void)
+{
+	return;
 }
 
 //https://forums.anandtech.com/threads/converting-a-16-bit-crc-function-from-c-to-c-fixed-thanks.2161349/
