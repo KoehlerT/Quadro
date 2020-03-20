@@ -3,18 +3,19 @@
 
 float battery_voltage;
 uint32_t value;
-ADC_HandleTypeDef* handle;
-void init_adc(ADC_HandleTypeDef * h)
+//ADC_HandleTypeDef* handle;
+void init_adc(ADC_HandleTypeDef * handle)
 {
-	handle = h;
-	h->Init.ContinuousConvMode = DISABLE;
-	HAL_ADC_Start_IT(h);
+	//handle = h;
+	handle->Init.ContinuousConvMode = DISABLE;
+	HAL_ADC_Start_IT(handle);
+	battery_voltage = 0;
 	
 	/*HAL_StatusTypeDef state = HAL_ADC_PollForConversion(handle, 1000);
 	value = HAL_ADC_GetValue(handle);
 	battery_voltage = value * 0.008864f; //initial battery voltage value*/
 }
-void poll_adc_value()
+void poll_adc_value(ADC_HandleTypeDef * handle)
 {
 	HAL_ADC_Start_IT(handle);
 	
@@ -33,5 +34,9 @@ void poll_adc_value()
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* AdcHandle)
 {
 	value = HAL_ADC_GetValue(AdcHandle);
+	if (battery_voltage == 0)
+		battery_voltage = value * 0.008864f; //Initial Battery voltage value
+	else
+		battery_voltage = battery_voltage  * 0.92 + value * 0.000709f; //Filtered battery voltage value
 }
 
