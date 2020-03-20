@@ -1,6 +1,6 @@
 #include "imu.h"
 
-//#define cal_level
+//#define cal_level //Uncomment for calibration of gyro level values. Hardcode them afterwards and comment
 
 //Public gyroscope variables
 int16_t gyro_axis[3];
@@ -33,7 +33,7 @@ int8_t init_gyro(I2C_HandleTypeDef* handle)
 	HAL_StatusTypeDef state = HAL_I2C_IsDeviceReady(imu_handle, IMU_address, 2, 10);
 	if (state != HAL_OK)
 	{
-		//hardwareFaultRegister |= 0b01000000;
+		hardwareFaultRegister |= 0b01000000;
 		return -1; //Device not ready
 	}
 	
@@ -83,8 +83,8 @@ void calibrate_gyro()
 void calibrate_level()
 {
 #ifndef cal_level
-	acc_pitch_cal_value = 85;
-	acc_roll_cal_value = -114;
+	acc_pitch_cal_value = 170;
+	acc_roll_cal_value = -55;
 	return;
 #else
 	level_calibration_on = 1;
@@ -138,7 +138,7 @@ int8_t read_gyro()
 	if (status != HAL_OK)
 	{
 		uint32_t error =  HAL_I2C_GetError(imu_handle);
-		//hardwareFaultRegister |= 0b01000000;
+		hardwareFaultRegister |= 0b01000000;
 		return -1;
 	}
 	acc_y = buffer[0] << 8 | buffer[1];
