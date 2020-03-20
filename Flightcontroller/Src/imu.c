@@ -30,7 +30,7 @@ int8_t init_gyro(I2C_HandleTypeDef* handle)
 {
 	imu_handle = handle;
 	//Check if device is ready
-	HAL_StatusTypeDef state = HAL_I2C_IsDeviceReady(handle, IMU_address, 2, 10);
+	HAL_StatusTypeDef state = HAL_I2C_IsDeviceReady(imu_handle, IMU_address, 2, 10);
 	if (state != HAL_OK)
 	{
 		//hardwareFaultRegister |= 0b01000000;
