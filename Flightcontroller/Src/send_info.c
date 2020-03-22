@@ -32,7 +32,7 @@ void send_info(UART_HandleTypeDef* uart)
 		tel_trans_buff[BUFFER_LENGTH - 1] = '\r';
 		
 		tel_trans_buff[0x00] = mode;
-		tel_trans_buff[0x01] = error;
+		tel_trans_buff[0x01] = faultRegister >> 8;
 		tel_trans_buff[0x02] = (int8_t)angle_roll;
 		tel_trans_buff[0x03] = (int8_t)angle_pitch;
 		tel_trans_buff[0x04] = temperature * 10;
@@ -67,8 +67,8 @@ void send_info(UART_HandleTypeDef* uart)
 	{
 		//Transmit the next 4 bytes
 		HAL_StatusTypeDef state = HAL_UART_Transmit(uart, &tel_trans_buff[transmitIndex], 4, 100);
-		if(state != HAL_OK)
-			hardwareFaultRegister |= 0b00001000;
+		if (state != HAL_OK)
+			set_error(TRANSMIT_ERR);
 		transmitIndex += 4;
 	}
 }

@@ -26,5 +26,6 @@ float pid_d_gain_yaw = 0.0;                 //Gain setting for the pitch D-contr
 int pid_max_yaw = 400;                      //Maximum output of the PID-controller (+/-).
 
 
+
 #endif // !PID_LIMITS_H
 

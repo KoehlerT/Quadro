@@ -38,5 +38,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* AdcHandle)
 		battery_voltage = value * 0.008864f; //Initial Battery voltage value
 	else
 		battery_voltage = battery_voltage  * 0.92 + value * 0.000709f; //Filtered battery voltage value
+	if(battery_voltage < 10)
+		set_error(BATTERY_LOW);
 }
 

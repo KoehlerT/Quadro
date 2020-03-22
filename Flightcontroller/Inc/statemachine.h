@@ -3,31 +3,51 @@
 #include "main.h"
 #include "receiver.h"
 #include "pid.h"
+#include "pid_ah.h"
+#include "baro.h"
 
 enum FLIGHTMODE;
 typedef enum {
-	IDLE   = 0x00,
-	READY  = 0x01,
-	MANUAL = 0x02,
-	SETUP = 0x11,
-	CALIBRATE = 0x12
+	IDLE = 0,
+	MANUAL = 1,
+	ALTITUDE = 2,
+	GPS = 3,
+	AUTONOMOuS = 4
 }FLIGHTMODE;
+
+enum QUADSTATE;
+typedef enum
+{
+	STOP = 0,
+	ARM = 1,
+	TAKEOFF = 2,
+	FLIGHT = 3,
+	INIT = 4,
+	TEST = 5
+}QUADSTATE;
 
 typedef enum
 {
-	NO_ERR = 0x00,
-	LOW_BATTERY = 0x01,
-	LOOPTIME_ERR = 0x02,
-	CAL_ERR = 0x11
+	NO_ERR = 0,
+	I2C_NOT_READY = 1,
+	IMU_READ_ERR = 2,
+	BARO_READ_ERR = 3,
+	COMPASS_READ_ERR = 4,
+	RECEIVER_ERR = 5,
+	TRANSMIT_ERR = 6,
+	CALIBRATION_ERR = 8,
+	LOOPTIME_EXCEED = 9,
+	BATTERY_LOW = 10,
 }CONTR_ERR;
 
-extern uint8_t mode;
-extern uint8_t error;
-extern uint8_t hardwareFaultRegister; // I2C Timeout, IMU Err, Baro Err, Comp Err, Receiver Err, Transmit Err,0,0
+extern FLIGHTMODE mode;
+extern QUADSTATE state;
+extern uint16_t faultRegister;
+// I2C Timeout, IMU Err, Baro Err, Comp Err, Receiver Err, Transmitter Err, Calibration Error, Looptime exceed, Battery low
 
 void init_state();
 void change_state();
 void set_error(CONTR_ERR error);
 void signal_state();
-
+void set_state(QUADSTATE st);
 #endif

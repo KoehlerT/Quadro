@@ -1,7 +1,7 @@
 #include "pid.h"
 #include "pid_limits.h"
 
-//PID Variables
+//PID Variables ANGLE
 float roll_level_adjust, pitch_level_adjust;
 float pid_error_temp;
 float pid_i_mem_roll, pid_roll_setpoint, gyro_roll_input, pid_output_roll, pid_last_roll_d_error;
@@ -164,7 +164,7 @@ void calculate_correction()
 	pid_last_yaw_d_error = pid_error_temp;
 }
 
-extern void reset_controllers()
+void reset_controllers()
 {
 	angle_pitch = angle_pitch_acc;
 	angle_roll = angle_roll_acc;

@@ -4,6 +4,7 @@
 #include "stm32f4xx_hal.h"
 #include "statemachine.h"
 #include "pid.h"
+#include "pid_ah.h"
 
 extern int16_t esc_1, esc_2, esc_3, esc_4;
 

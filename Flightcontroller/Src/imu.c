@@ -33,7 +33,7 @@ int8_t init_gyro(I2C_HandleTypeDef* handle)
 	HAL_StatusTypeDef state = HAL_I2C_IsDeviceReady(imu_handle, IMU_address, 2, 10);
 	if (state != HAL_OK)
 	{
-		hardwareFaultRegister |= 0b01000000;
+		set_error(I2C_NOT_READY);
 		return -1; //Device not ready
 	}
 	
@@ -106,7 +106,7 @@ void calibrate_level()
 	//if (err < 80) //Write calibration data to eeprom
 	if(err >= 80)
 	{
-		set_error(CAL_ERR);
+		set_error(CALIBRATION_ERR);
 	}
 	
 	level_calibration_on = 0;
@@ -138,7 +138,7 @@ int8_t read_gyro()
 	if (status != HAL_OK)
 	{
 		uint32_t error =  HAL_I2C_GetError(imu_handle);
-		hardwareFaultRegister |= 0b01000000;
+		set_error(IMU_READ_ERR);
 		return -1;
 	}
 	acc_y = buffer[0] << 8 | buffer[1];

@@ -2,8 +2,9 @@
 
 #define MS5611_addr 0x77 << 1
 #ifdef STATEMACHINE_H
-#define CheckedI2c(x) if(x) hardwareFaultRegister |= 0b00100000;
-#else#define CheckedI2c(x) if (x != HAL_OK);
+#define CheckedI2c(x) if(x != HAL_OK ) set_error(BARO_READ_ERR);
+#else
+#define CheckedI2c(x) if (x != HAL_OK);
 #endif // STATEMACHINE_H
 
 
@@ -15,7 +16,6 @@ float altitude_meters, actual_pressure, baro_temp;
 I2C_HandleTypeDef* handle;
 int64_t pow(int16_t base, int16_t exp);
 
-float pid_error_gain_altitude, pid_throttle_gain_altitude;
 uint16_t C[7];
 uint8_t barometer_counter, temperature_counter, average_temperature_mem_location;
 int64_t OFF, OFF_C2, SENS, SENS_C1, P;
@@ -55,6 +55,7 @@ void init_baro(I2C_HandleTypeDef* i2cHandle)
 	actual_pressure = 0;                                           //Reset the pressure calculations.
 	ground_pressure = 96000;
 	
+	reset_pid_altitude(); //reset pid altitude for enabeling manual altitude change etc
 }
 void read_baro()
 {
@@ -70,7 +71,7 @@ void read_baro()
 			//Get temperature data from MS-5611
 			buffer[0] = 0x00;                                                //Send a 0 to indicate that we want to poll the requested data.                                                //End the transmission with the MS5611.
 			HAL_I2C_Master_Transmit(handle, MS5611_addr, buffer, 1, 100);
-			CheckedI2c(HAL_I2C_Master_Receive(handle, MS5611_addr, buffer, 3, 100))                          //Poll 3 data bytes from the MS5611.
+			CheckedI2c(HAL_I2C_Master_Receive(handle, MS5611_addr, buffer, 3, 100));                          //Poll 3 data bytes from the MS5611.
 			// Store the temperature in a 5 location rotating memory to prevent temperature spikes.
 			raw_average_temperature_total -= raw_temperature_rotating_memory[average_temperature_mem_location];
 			raw_temperature_rotating_memory[average_temperature_mem_location] = buffer[0] << 16 | buffer[1] << 8 | buffer[2];
@@ -133,11 +134,15 @@ void read_baro()
 		baro_temp = (float)(2000 + (dT * C[6])) / 8388608.0f;
 	}
 	if (barometer_counter == 3) {
-		                                                                               //When the barometer counter is 3
-
-	  barometer_counter = 0;                                                                                     //Set the barometer counter to 0 for the next measurements.
-	  
+		barometer_counter = 0;                                                                                     //Set the barometer counter to 0 for the next measurements.
+		calculate_pid_altitude();
 	}
+}
+
+void reset_ground_pressure()
+{
+	ground_pressure = actual_pressure;
+	altitude_meters = 0;
 }
 
 int64_t pow(int16_t base, int16_t exp)

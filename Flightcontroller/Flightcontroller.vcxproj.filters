@@ -315,6 +315,9 @@
     <ClInclude Include="Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_adc_ex.h">
       <Filter>Header files\STM32Cube HAL\ADC</Filter>
     </ClInclude>
+    <ClCompile Include="Src\pid_ah.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\Users\Tim\Downloads\Quadro-master\Quadro-master\Flightcontroller\Inc\statemachine.h">
@@ -348,6 +351,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Inc\adc.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\pid_ah.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

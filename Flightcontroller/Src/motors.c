@@ -3,7 +3,9 @@
 TIM_HandleTypeDef* timer_handle;
 
 int16_t esc_1, esc_2, esc_3, esc_4;
-
+int16_t manual_takeoff_throttle = 1500;     //Enter the manual hover point when auto take-off detection is not desired (between 1400 and 1600).
+int16_t takeoff_throttle; //difference between 1500 and hover throttle
+int16_t throttle;
 void init_motors(TIM_HandleTypeDef* handle)
 {
 	timer_handle = handle;
@@ -19,12 +21,21 @@ void init_motors(TIM_HandleTypeDef* handle)
 	timer_handle->Instance->CCR3 = 1000;
 	timer_handle->Instance->CCR4 = 1000;
 	
+	if (manual_takeoff_throttle != 0)
+		takeoff_throttle = 1500 - manual_takeoff_throttle;
 }
 
-void set_motors(int16_t throttle)
+void set_motors(int16_t throttle_input)
 {
-	if (mode == MANUAL)
+	//throttle is channel[2]
+	//TODO: Battery compensation
+	if (state == FLIGHT)
 	{
+		throttle = throttle_input + takeoff_throttle;                                           //The base throttle is the receiver throttle channel + the detected take-off throttle.
+		if(mode >= ALTITUDE) {//If altitude mode is active.														
+			throttle = 1500 + takeoff_throttle + pid_output_altitude + manual_throttle;     //The base throttle is the receiver throttle channel + the detected take-off throttle + the PID controller output.
+		}
+		
 		if (throttle > 1800) throttle = 1800;                                           //We need some room to keep full control at full throttle.
 		esc_1 = throttle - pid_output_pitch + pid_output_roll - pid_output_yaw;
 		esc_2 = throttle + pid_output_pitch + pid_output_roll + pid_output_yaw;
@@ -48,7 +59,7 @@ void set_motors(int16_t throttle)
 		esc_3 = 1000;
 		esc_4 = 1000;
 	}
-	if (mode == SETUP)
+	if (state == TEST)
 	{
 		esc_1 = esc_2 = esc_3 = esc_4 = throttle;
 	}

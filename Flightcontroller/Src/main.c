@@ -126,7 +126,7 @@ int main(void)
 	HAL_Delay(1000);
 	__HAL_RCC_I2C2_RELEASE_RESET();
 	MX_I2C2_Init();*/
-	
+	set_state(INIT);
 	init_state();
 	init_info(&huart1);
 	init_receiver(&htim2);
@@ -137,7 +137,7 @@ int main(void)
 	
 	calibrate_gyro();
 	calibrate_level();
-	
+	set_state(STOP);
 	
   /* USER CODE END 2 */
 
@@ -162,7 +162,7 @@ int main(void)
 	  //Delay
 	  loopTime = DWT->CYCCNT / 100;
 	 if(DWT->CYCCNT >= 100 * 3900) 
-		 loopTime = -1;
+		  set_error(LOOPTIME_EXCEED);
 	 while (DWT->CYCCNT <= 100 * 4000) ;  //100 000 000Hz wait for next cycle -> every cycle 4ms b
   }
   /* USER CODE END 3 */

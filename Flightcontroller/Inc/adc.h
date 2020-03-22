@@ -1,6 +1,7 @@
 #ifndef ADC_H
 #define ADC_H
 #include "stm32f4xx_hal.h"
+#include "statemachine.h"
 
 void init_adc(ADC_HandleTypeDef * handle);
 void poll_adc_value(ADC_HandleTypeDef * handle);
