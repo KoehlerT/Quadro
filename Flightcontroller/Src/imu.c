@@ -18,6 +18,7 @@ int16_t temperature;
 
 //Helper vars
 int16_t temp_raw;
+uint8_t imu_buffer[14];
 //- Calibration vars
 int16_t cal_int; //counts calibration readings
 uint8_t level_calibration_on;
@@ -46,19 +47,19 @@ int8_t init_gyro(I2C_HandleTypeDef* handle)
 	
 	return 0;*/
 	//Alternative
-	uint8_t buffer[] = { 0x6B, 0x00 };
-	HAL_StatusTypeDef status = HAL_I2C_Master_Transmit(imu_handle, IMU_address, buffer, 2, 1000);
+	imu_buffer[0] =  0x6B; imu_buffer[1] = 0x00;
+	HAL_StatusTypeDef status = HAL_I2C_Master_Transmit(imu_handle, IMU_address, imu_buffer, 2, 1000);
 	if (status != HAL_OK)
 		return -1;
 	
-	buffer[0] = 0x1B; buffer[1] = 0x08;
-	HAL_I2C_Master_Transmit(imu_handle, IMU_address, buffer, sizeof(buffer), 1000);
+	imu_buffer[0] = 0x1B; imu_buffer[1] = 0x08;
+	HAL_I2C_Master_Transmit(imu_handle, IMU_address, imu_buffer, 2, 1000);
 	
-	buffer[0] = 0x1C; buffer[1] = 0x10;
-	HAL_I2C_Master_Transmit(imu_handle, IMU_address, buffer, sizeof(buffer), 1000);
+	imu_buffer[0] = 0x1C; imu_buffer[1] = 0x10;
+	HAL_I2C_Master_Transmit(imu_handle, IMU_address, imu_buffer, 2, 1000);
 	
-	buffer[0] = 0x1A; buffer[1] = 0x03;
-	HAL_I2C_Master_Transmit(imu_handle, IMU_address, buffer, sizeof(buffer), 1000);
+	imu_buffer[0] = 0x1A; imu_buffer[1] = 0x03;
+	HAL_I2C_Master_Transmit(imu_handle, IMU_address, imu_buffer, 2, 1000);
 	
 	return 0;
 }
@@ -129,27 +130,27 @@ void calibrate_level()
 
 int8_t read_gyro()
 {
-	uint8_t buffer[14];
-	buffer[0] = 0x3B;
+	for (int i = 0; i < 14; i++)imu_buffer[i] = 0; //clear buffer
+	imu_buffer[0] = 0x3B;
 	
-	HAL_I2C_Master_Transmit(imu_handle, IMU_address, buffer, 1, 100);
+	HAL_I2C_Master_Transmit(imu_handle, IMU_address, imu_buffer, 1, 100);
 	
-	HAL_StatusTypeDef status = HAL_I2C_Master_Receive(imu_handle, IMU_address, buffer, 14, 5000);
+	HAL_StatusTypeDef status = HAL_I2C_Master_Receive(imu_handle, IMU_address, imu_buffer, 14, 500);
 	if (status != HAL_OK)
 	{
 		uint32_t error =  HAL_I2C_GetError(imu_handle);
 		set_error(IMU_READ_ERR);
 		return -1;
 	}
-	acc_y = buffer[0] << 8 | buffer[1];
-	acc_x = buffer[2] << 8 | buffer[3];
-	acc_z = buffer[4] << 8 | buffer[5];
+	acc_y = imu_buffer[0] << 8 | imu_buffer[1];
+	acc_x = imu_buffer[2] << 8 | imu_buffer[3];
+	acc_z = imu_buffer[4] << 8 | imu_buffer[5];
 	
-	temp_raw = (int16_t)buffer[6] << 8 | (int16_t)buffer[7];
+	temp_raw = (int16_t)imu_buffer[6] << 8 | (int16_t)imu_buffer[7];
 	
-	gyro_roll =  buffer[8]  << 8 | buffer[9];
-	gyro_pitch = buffer[10] << 8 | buffer[11];
-	gyro_yaw =   buffer[12] << 8 | buffer[13];
+	gyro_roll =  imu_buffer[8]  << 8 | imu_buffer[9];
+	gyro_pitch = imu_buffer[10] << 8 | imu_buffer[11];
+	gyro_yaw =   imu_buffer[12] << 8 | imu_buffer[13];
 	
 	gyro_pitch *= -1;
 	gyro_yaw *= -1;

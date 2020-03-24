@@ -77,6 +77,7 @@
   <ItemGroup>
     <ClCompile Include="Src\adc.c" />
     <ClCompile Include="Src\baro.c" />
+    <ClCompile Include="Src\gps.c" />
     <ClCompile Include="Src\imu.c" />
     <ClCompile Include="Src\led.c" />
     <ClCompile Include="Src\motors.c" />
@@ -109,6 +110,7 @@
     <ClInclude Include="C:\Users\Tim\Downloads\Quadro-master\Quadro-master\Flightcontroller\Inc\statemachine.h" />
     <ClInclude Include="Inc\adc.h" />
     <ClInclude Include="Inc\baro.h" />
+    <ClInclude Include="Inc\gps.h" />
     <ClInclude Include="Inc\imu.h" />
     <ClInclude Include="Inc\led.h" />
     <ClInclude Include="Inc\motors.h" />

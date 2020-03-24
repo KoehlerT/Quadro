@@ -318,6 +318,9 @@
     <ClCompile Include="Src\pid_ah.c">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="Src\gps.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\Users\Tim\Downloads\Quadro-master\Quadro-master\Flightcontroller\Inc\statemachine.h">
@@ -354,6 +357,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Inc\pid_ah.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\gps.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
