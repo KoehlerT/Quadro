@@ -83,8 +83,8 @@ void calibrate_gyro()
 void calibrate_level()
 {
 #ifndef cal_level
-	acc_pitch_cal_value = 170;
-	acc_roll_cal_value = -55;
+	acc_pitch_cal_value = 140;
+	acc_roll_cal_value = -138;
 	return;
 #else
 	level_calibration_on = 1;

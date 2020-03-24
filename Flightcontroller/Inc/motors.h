@@ -7,7 +7,7 @@
 #include "pid_ah.h"
 
 extern int16_t esc_1, esc_2, esc_3, esc_4;
-
+extern int16_t throttle;
 extern void init_motors(TIM_HandleTypeDef*);
 extern void set_motors(int16_t);
 

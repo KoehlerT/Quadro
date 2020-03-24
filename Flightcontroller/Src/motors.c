@@ -3,7 +3,7 @@
 TIM_HandleTypeDef* timer_handle;
 
 int16_t esc_1, esc_2, esc_3, esc_4;
-int16_t manual_takeoff_throttle = 1500;     //Enter the manual hover point when auto take-off detection is not desired (between 1400 and 1600).
+int16_t manual_takeoff_throttle = 1350;     //Enter the manual hover point when auto take-off detection is not desired (between 1400 and 1600).
 int16_t takeoff_throttle; //difference between 1500 and hover throttle
 int16_t throttle;
 void init_motors(TIM_HandleTypeDef* handle)
@@ -68,5 +68,5 @@ void set_motors(int16_t throttle_input)
 	timer_handle->Instance->CCR2 = esc_2;
 	timer_handle->Instance->CCR3 = esc_3;
 	timer_handle->Instance->CCR4 = esc_4;
-	timer_handle->Instance->CNT = 5000; //This will reset timer 4 and the ESC pulses are directly created.
+	timer_handle->Instance->CNT = 5000; //This will reset the timer and the ESC pulses are directly created.
 }

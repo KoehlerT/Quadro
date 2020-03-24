@@ -43,10 +43,10 @@ void send_info(UART_HandleTypeDef* uart)
 		
 		tel_trans_buff[0x0B] = (uint8_t)(battery_voltage * 10);
 		
-		tel_trans_buff[0x14] = esc_1;
-		tel_trans_buff[0x15] = esc_1 >> 8;
-		tel_trans_buff[0x16] = esc_2;
-		tel_trans_buff[0x17] = esc_2 >> 8;
+		tel_trans_buff[0x14] = throttle;
+		tel_trans_buff[0x15] = throttle >> 8;
+		tel_trans_buff[0x16] = (int16_t )pid_output_altitude;
+		tel_trans_buff[0x17] = ((int16_t)pid_output_altitude) >> 8;
 		tel_trans_buff[0x18] = esc_3;
 		tel_trans_buff[0x19] = esc_3 >> 8;
 		tel_trans_buff[0x1A] = esc_4;
