@@ -118,7 +118,7 @@ int main(void)
   MX_I2C2_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
-  //MX_USART1_UART_Init();
+  MX_USART1_UART_Init();
   MX_I2C1_Init();
   MX_ADC1_Init();
   MX_DMA_Init();
@@ -139,7 +139,7 @@ int main(void)
 	init_info(&huart1);
 	init_receiver(&htim2);
 	init_gyro(&hi2c2);
-	init_baro(&hi2c2);
+	//init_baro(&hi2c2);
 	init_motors(&htim3);
 	init_adc(&hadc1);
 	init_gps(&huart2);
@@ -164,7 +164,7 @@ int main(void)
 	  poll_adc_value(&hadc1);
 	  
 	  read_gyro();
-	  read_baro();
+	  //read_baro();
 	  //read_gps(&huart2);
 	  calculate_pid();
 	  

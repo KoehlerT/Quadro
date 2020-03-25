@@ -19,4 +19,5 @@ extern int8_t init_gyro(I2C_HandleTypeDef* handle);
 extern int8_t read_gyro();
 extern void calibrate_gyro();
 extern void calibrate_level();
+void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef* handle);
 #endif

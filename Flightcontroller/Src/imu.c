@@ -127,21 +127,8 @@ void calibrate_level()
 #endif
 
 }
-
-int8_t read_gyro()
+void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef* handle)
 {
-	for (int i = 0; i < 14; i++)imu_buffer[i] = 0; //clear buffer
-	imu_buffer[0] = 0x3B;
-	
-	HAL_I2C_Master_Transmit(imu_handle, IMU_address, imu_buffer, 1, 100);
-	
-	HAL_StatusTypeDef status = HAL_I2C_Master_Receive(imu_handle, IMU_address, imu_buffer, 14, 500);
-	if (status != HAL_OK)
-	{
-		uint32_t error =  HAL_I2C_GetError(imu_handle);
-		set_error(IMU_READ_ERR);
-		return -1;
-	}
 	acc_y = imu_buffer[0] << 8 | imu_buffer[1];
 	acc_x = imu_buffer[2] << 8 | imu_buffer[3];
 	acc_z = imu_buffer[4] << 8 | imu_buffer[5];
@@ -168,5 +155,25 @@ int8_t read_gyro()
 	}
 	
 	temperature = (int16_t)(((float)temp_raw / 340.0f) + 36.53);
+}
+int8_t read_gyro()
+{
+	for (int i = 0; i < 14; i++)imu_buffer[i] = 0; //clear buffer
+	imu_buffer[0] = 0x3B;
+	
+	HAL_I2C_Master_Transmit(imu_handle, IMU_address, imu_buffer, 1, 100);
+	
+	HAL_StatusTypeDef status =  HAL_I2C_Master_Receive_IT(imu_handle, IMU_address, imu_buffer, 14);
+	
+	
+	//HAL_StatusTypeDef status = HAL_I2C_Master_Receive(imu_handle, IMU_address, imu_buffer, 14, 500);
+	if (status != HAL_OK)
+	{
+		uint32_t error =  HAL_I2C_GetError(imu_handle);
+		set_error(IMU_READ_ERR);
+		return -1;
+	}
+	return 0;
+	
 	return 0;
 }
