@@ -10,8 +10,11 @@
 #include "baro.h"
 
 void init_info(UART_HandleTypeDef*);
-void USART1_IRQHandler(void);
 void send_info(UART_HandleTypeDef*);
+
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
+void HAL_UART_TxHalfCpltCallback(UART_HandleTypeDef *huart);
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart);
 
 #endif // SEND_INFO_H
 
