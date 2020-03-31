@@ -131,8 +131,10 @@ int8_t read_gyro()
 {
 	for (int i = 0; i < 14; i++)imu_buffer[i] = 0; //clear buffer
 	imu_buffer[0] = 0x3B;
+	set_sending_flag();
+	HAL_I2C_Master_Transmit_IT(imu_handle, IMU_address, imu_buffer, 1);
+	wait_to_send();
 	
-	HAL_I2C_Master_Transmit(imu_handle, IMU_address, imu_buffer, 1, 100);
 	set_receiving_flag(); //set flag
 	HAL_StatusTypeDef status =  HAL_I2C_Master_Receive_IT(imu_handle, IMU_address, imu_buffer, 14); //receive buffer
 	//HAL_StatusTypeDef status = HAL_I2C_Master_Receive(imu_handle, IMU_address, imu_buffer, 14, 500);

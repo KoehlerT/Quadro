@@ -86,6 +86,7 @@
     <ClCompile Include="Src\pid_ah.c" />
     <ClCompile Include="Src\receiver.c" />
     <ClCompile Include="Src\send_info.c" />
+    <ClCompile Include="Src\spi_pi.c" />
     <ClCompile Include="Src\statemachine.c" />
     <ClCompile Include="Src\stm32f4xx_it.c" />
     <ClCompile Include="Src\stm32f4xx_hal_msp.c" />
@@ -121,6 +122,7 @@
     <ClInclude Include="Inc\pid_limits.h" />
     <ClInclude Include="Inc\receiver.h" />
     <ClInclude Include="Inc\send_info.h" />
+    <ClInclude Include="Inc\spi_pi.h" />
     <ClInclude Include="Inc\statemachine.h" />
     <ClInclude Include="Inc\stm32f4xx_it.h" />
     <ClInclude Include="Inc\stm32f4xx_hal_conf.h" />

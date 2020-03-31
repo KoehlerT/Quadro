@@ -70,7 +70,9 @@ void read_baro()
 			//And the temperature counter is 0.
 			//Get temperature data from MS-5611
 			baro_buff[0] = 0x00;                                                //Send a 0 to indicate that we want to poll the requested data.                                                //End the transmission with the MS5611.
-			HAL_I2C_Master_Transmit(handle, MS5611_addr, baro_buff, 1, 100);
+			set_sending_flag();
+			HAL_I2C_Master_Transmit_IT(handle, MS5611_addr, baro_buff, 1);
+			wait_to_send();
 			set_receiving_flag();
 			CheckedI2c(HAL_I2C_Master_Receive_IT(handle, MS5611_addr, baro_buff, 3));                          //Poll 3 data bytes from the MS5611.
 			wait_to_receive();
@@ -85,7 +87,9 @@ void read_baro()
 		else {
 			//Get pressure data from MS-5611
 			baro_buff[0] = 0x00;
-			HAL_I2C_Master_Transmit(handle, MS5611_addr, baro_buff, 1, 100);                                                        //Send a 0 to indicate that we want to poll the requested data.
+			set_sending_flag();
+			HAL_I2C_Master_Transmit_IT(handle, MS5611_addr, baro_buff, 1);                                                        //Send a 0 to indicate that we want to poll the requested data.
+			wait_to_send();
 			set_receiving_flag();
 			CheckedI2c(HAL_I2C_Master_Receive_IT(handle, MS5611_addr, baro_buff, 3))                                       //Poll 3 data bytes from the MS5611.
 			wait_to_receive();
@@ -98,13 +102,17 @@ void read_baro()
 		  temperature_counter = 0;                                                   //Reset the temperature_counter variable.
 		  //Request temperature data
 		  baro_buff[0] = 0x58;                                                     //Send a 0x58 to indicate that we want to request the temperature data.
-		  HAL_I2C_Master_Transmit(handle, MS5611_addr, baro_buff, 1, 100);                                                   //End the transmission with the MS5611.
+			set_sending_flag();
+			HAL_I2C_Master_Transmit_IT(handle, MS5611_addr, baro_buff, 1);                                                   //End the transmission with the MS5611.
+			wait_to_send();
 		}
 		else {
 			//If the temperature_counter variable does not equal 20.
 //Request pressure data
 			baro_buff[0] = 0x48;//Send a 0x48 to indicate that we want to request the pressure data.
-			HAL_I2C_Master_Transmit(handle, MS5611_addr, baro_buff, 1, 100);                                                //End the transmission with the MS5611.
+			set_sending_flag();
+			HAL_I2C_Master_Transmit_IT(handle, MS5611_addr, baro_buff, 1);                                                //End the transmission with the MS5611.
+			wait_to_send();
 		}
 	}
 	if (barometer_counter == 2) {

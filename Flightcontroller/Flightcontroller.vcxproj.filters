@@ -336,6 +336,9 @@
     <ClCompile Include="Src\i2c_contr.c">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="Src\spi_pi.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\Users\Tim\Downloads\Quadro-master\Quadro-master\Flightcontroller\Inc\statemachine.h">
@@ -378,6 +381,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Inc\i2c_contr.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\spi_pi.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
