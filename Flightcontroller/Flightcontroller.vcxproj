@@ -78,6 +78,7 @@
     <ClCompile Include="Src\adc.c" />
     <ClCompile Include="Src\baro.c" />
     <ClCompile Include="Src\gps.c" />
+    <ClCompile Include="Src\i2c_contr.c" />
     <ClCompile Include="Src\imu.c" />
     <ClCompile Include="Src\led.c" />
     <ClCompile Include="Src\motors.c" />
@@ -111,6 +112,7 @@
     <ClInclude Include="Inc\adc.h" />
     <ClInclude Include="Inc\baro.h" />
     <ClInclude Include="Inc\gps.h" />
+    <ClInclude Include="Inc\i2c_contr.h" />
     <ClInclude Include="Inc\imu.h" />
     <ClInclude Include="Inc\led.h" />
     <ClInclude Include="Inc\motors.h" />
@@ -157,5 +159,7 @@
     <ClCompile Include="Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_adc_ex.c" />
     <ClInclude Include="Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_adc.h" />
     <ClInclude Include="Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_adc_ex.h" />
+    <ClCompile Include="Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_spi.c" />
+    <ClInclude Include="Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h" />
   </ItemGroup>
 </Project>

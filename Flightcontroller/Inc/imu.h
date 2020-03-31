@@ -3,6 +3,7 @@
 
 #include "stm32f4xx_hal.h"
 #include "statemachine.h"
+#include "i2c_contr.h"
 #define IMU_address 0x68 << 1
 
 
@@ -15,9 +16,9 @@ extern float angle_roll_acc, angle_pitch_acc;
 
 extern int16_t temperature;
 
-extern int8_t init_gyro(I2C_HandleTypeDef* handle);
-extern int8_t read_gyro();
-extern void calibrate_gyro();
-extern void calibrate_level();
-void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef* handle);
+int8_t init_gyro(I2C_HandleTypeDef* handle);
+int8_t read_gyro();
+void calibrate_gyro();
+void calibrate_level();
+
 #endif

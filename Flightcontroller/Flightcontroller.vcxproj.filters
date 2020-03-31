@@ -112,6 +112,12 @@
     <Filter Include="Header files\STM32Cube HAL\ADC">
       <UniqueIdentifier>{b1e77027-6a27-4a53-af9e-4812914e2f45}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source files\STM32Cube HAL\SPI">
+      <UniqueIdentifier>{dec68a58-d26e-465a-8324-0e2aff35c1af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\STM32Cube HAL\SPI">
+      <UniqueIdentifier>{bdc935a0-de3d-4a8a-9f88-6a9939658bd5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\stm32f4xx_it.c">
@@ -321,6 +327,15 @@
     <ClCompile Include="Src\gps.c">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_spi.c">
+      <Filter>Source files\STM32Cube HAL\SPI</Filter>
+    </ClCompile>
+    <ClInclude Include="Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h">
+      <Filter>Header files\STM32Cube HAL\SPI</Filter>
+    </ClInclude>
+    <ClCompile Include="Src\i2c_contr.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\Users\Tim\Downloads\Quadro-master\Quadro-master\Flightcontroller\Inc\statemachine.h">
@@ -360,6 +375,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Inc\gps.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\i2c_contr.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

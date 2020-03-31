@@ -53,6 +53,8 @@ ADC_HandleTypeDef hadc1;
 I2C_HandleTypeDef hi2c1;
 I2C_HandleTypeDef hi2c2;
 
+SPI_HandleTypeDef hspi1;
+
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 
@@ -76,6 +78,7 @@ static void MX_I2C1_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_DMA_Init(void);
 static void MX_USART2_UART_Init(void);
+static void MX_SPI1_Init(void);
 /* USER CODE BEGIN PFP */
 void SystemClockHSI_Config(void);
 /* USER CODE END PFP */
@@ -118,11 +121,12 @@ int main(void)
   MX_I2C2_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
-  MX_USART1_UART_Init();
+  //MX_USART1_UART_Init();
   MX_I2C1_Init();
   MX_ADC1_Init();
   MX_DMA_Init();
   MX_USART2_UART_Init();
+  MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
 	MX_USART1_UART_Init(); //USART1 must be initialized after DMA. Therefore calling it again
 	//Initializing Clock for Profiling and Timekeeping
@@ -139,13 +143,13 @@ int main(void)
 	init_info(&huart1);
 	init_receiver(&htim2);
 	init_gyro(&hi2c2);
-	//init_baro(&hi2c2);
+	init_baro(&hi2c2);
 	init_motors(&htim3);
 	init_adc(&hadc1);
 	init_gps(&huart2);
 	
-	calibrate_gyro();
-	calibrate_level();
+	/*calibrate_gyro();
+	calibrate_level();*/
 	set_state(STOP);
 	
   /* USER CODE END 2 */
@@ -164,7 +168,7 @@ int main(void)
 	  poll_adc_value(&hadc1);
 	  
 	  read_gyro();
-	  //read_baro();
+	  read_baro();
 	  //read_gps(&huart2);
 	  calculate_pid();
 	  
@@ -335,6 +339,43 @@ static void MX_I2C2_Init(void)
   /* USER CODE BEGIN I2C2_Init 2 */
 
   /* USER CODE END I2C2_Init 2 */
+
+}
+
+/**
+  * @brief SPI1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_SPI1_Init(void)
+{
+
+  /* USER CODE BEGIN SPI1_Init 0 */
+
+  /* USER CODE END SPI1_Init 0 */
+
+  /* USER CODE BEGIN SPI1_Init 1 */
+
+  /* USER CODE END SPI1_Init 1 */
+  /* SPI1 parameter configuration*/
+  hspi1.Instance = SPI1;
+  hspi1.Init.Mode = SPI_MODE_SLAVE;
+  hspi1.Init.Direction = SPI_DIRECTION_2LINES;
+  hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi1.Init.NSS = SPI_NSS_SOFT;
+  hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  hspi1.Init.CRCPolynomial = 10;
+  if (HAL_SPI_Init(&hspi1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN SPI1_Init 2 */
+
+  /* USER CODE END SPI1_Init 2 */
 
 }
 

@@ -71,7 +71,9 @@ void read_baro()
 			//Get temperature data from MS-5611
 			baro_buff[0] = 0x00;                                                //Send a 0 to indicate that we want to poll the requested data.                                                //End the transmission with the MS5611.
 			HAL_I2C_Master_Transmit(handle, MS5611_addr, baro_buff, 1, 100);
-			CheckedI2c(HAL_I2C_Master_Receive(handle, MS5611_addr, baro_buff, 3, 100));                          //Poll 3 data bytes from the MS5611.
+			set_receiving_flag();
+			CheckedI2c(HAL_I2C_Master_Receive_IT(handle, MS5611_addr, baro_buff, 3));                          //Poll 3 data bytes from the MS5611.
+			wait_to_receive();
 			// Store the temperature in a 5 location rotating memory to prevent temperature spikes.
 			raw_average_temperature_total -= raw_temperature_rotating_memory[average_temperature_mem_location];
 			raw_temperature_rotating_memory[average_temperature_mem_location] = baro_buff[0] << 16 | baro_buff[1] << 8 | baro_buff[2];
@@ -84,7 +86,9 @@ void read_baro()
 			//Get pressure data from MS-5611
 			baro_buff[0] = 0x00;
 			HAL_I2C_Master_Transmit(handle, MS5611_addr, baro_buff, 1, 100);                                                        //Send a 0 to indicate that we want to poll the requested data.
-			CheckedI2c(HAL_I2C_Master_Receive(handle, MS5611_addr, baro_buff, 3, 100))                                       //Poll 3 data bytes from the MS5611.
+			set_receiving_flag();
+			CheckedI2c(HAL_I2C_Master_Receive_IT(handle, MS5611_addr, baro_buff, 3))                                       //Poll 3 data bytes from the MS5611.
+			wait_to_receive();
 			raw_pressure = baro_buff[0] << 16 | baro_buff[1] << 8 | baro_buff[2];      //Shift the individual bytes in the correct position and add them to the raw_pressure variable.
 		}
 
