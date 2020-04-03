@@ -44,6 +44,7 @@ typedef enum
 extern FLIGHTMODE mode;
 extern QUADSTATE state;
 extern uint16_t faultRegister;
+extern int16_t looptime;
 // I2C Timeout, IMU Err, Baro Err, Comp Err, Receiver Err, Transmitter Err, Calibration Error, Looptime exceed, Battery low
 
 void init_state();

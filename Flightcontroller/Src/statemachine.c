@@ -3,7 +3,7 @@
 
 FLIGHTMODE mode = IDLE;
 QUADSTATE state = STOP;
-
+int16_t looptime;
 // I2C Timeout, IMU Err, Baro Err, Comp Err, Receiver Err, Transmitter Err, Calibration Error, Looptime exceed, Battery low
 uint16_t faultRegister; //first 8 bits: peripheral faults, last 8 bits other
 

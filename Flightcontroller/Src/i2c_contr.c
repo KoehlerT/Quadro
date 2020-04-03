@@ -41,3 +41,8 @@ void HAL_I2C_MasterTxCpltCallback(I2C_HandleTypeDef* handle)
 {
 	i2c_sending_is_waiting = 0;
 }
+
+void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef* handle)
+{
+	i2c_receive_is_waiting = 0;
+}

@@ -14,6 +14,9 @@ extern float angle_pitch, angle_roll, angle_yaw;
 extern int32_t acc_total_vector, acc_total_vector_at_start;
 extern float angle_roll_acc, angle_pitch_acc;
 
+extern int32_t gyro_roll_cal, gyro_pitch_cal, gyro_yaw_cal;
+extern int16_t acc_pitch_cal_value, acc_roll_cal_value;
+
 extern int16_t temperature;
 
 int8_t init_gyro(I2C_HandleTypeDef* handle);

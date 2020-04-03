@@ -87,12 +87,14 @@ void read_baro()
 		else {
 			//Get pressure data from MS-5611
 			baro_buff[0] = 0x00;
-			set_sending_flag();
+			CheckedI2c(HAL_I2C_Mem_Read(handle, MS5611_addr, 0x00, I2C_MEMADD_SIZE_8BIT, baro_buff, 3, 100));
+			/*set_sending_flag();
 			HAL_I2C_Master_Transmit_IT(handle, MS5611_addr, baro_buff, 1);                                                        //Send a 0 to indicate that we want to poll the requested data.
 			wait_to_send();
 			set_receiving_flag();
 			CheckedI2c(HAL_I2C_Master_Receive_IT(handle, MS5611_addr, baro_buff, 3))                                       //Poll 3 data bytes from the MS5611.
 			wait_to_receive();
+			*/
 			raw_pressure = baro_buff[0] << 16 | baro_buff[1] << 8 | baro_buff[2];      //Shift the individual bytes in the correct position and add them to the raw_pressure variable.
 		}
 

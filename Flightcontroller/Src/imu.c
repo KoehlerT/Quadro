@@ -1,6 +1,7 @@
 #include "imu.h"
 
 //#define cal_level //Uncomment for calibration of gyro level values. Hardcode them afterwards and comment
+#define CheckI2C(x) if (x != HAL_OK) set_error(IMU_READ_ERR);
 
 //Public gyroscope variables
 int16_t gyro_axis[3];
@@ -12,6 +13,8 @@ float angle_pitch, angle_roll, angle_yaw;
 int32_t acc_total_vector, acc_total_vector_at_start;
 float angle_roll_acc, angle_pitch_acc;
 
+int32_t gyro_roll_cal, gyro_pitch_cal, gyro_yaw_cal;
+int16_t acc_pitch_cal_value, acc_roll_cal_value;
 
 //Public temperature variables
 int16_t temperature;
@@ -22,14 +25,15 @@ uint8_t imu_buffer[14];
 //- Calibration vars
 int16_t cal_int; //counts calibration readings
 uint8_t level_calibration_on;
-int32_t gyro_roll_cal, gyro_pitch_cal, gyro_yaw_cal;
-int16_t acc_pitch_cal_value, acc_roll_cal_value;
+
 
 I2C_HandleTypeDef* imu_handle;
 
 int8_t init_gyro(I2C_HandleTypeDef* handle)
 {
+	//HAL_I2C_EnableListen_IT(handle);
 	imu_handle = handle;
+	
 	//Check if device is ready
 	HAL_StatusTypeDef state = HAL_I2C_IsDeviceReady(imu_handle, IMU_address, 2, 10);
 	if (state != HAL_OK)
@@ -131,8 +135,12 @@ int8_t read_gyro()
 {
 	for (int i = 0; i < 14; i++)imu_buffer[i] = 0; //clear buffer
 	imu_buffer[0] = 0x3B;
+	/*set_receiving_flag();
+	CheckI2C(HAL_I2C_Mem_Read_IT(imu_handle, IMU_address, 0x3B, I2C_MEMADD_SIZE_8BIT, imu_buffer, 14));
+	wait_to_receive();*/
+	
 	set_sending_flag();
-	HAL_I2C_Master_Transmit_IT(imu_handle, IMU_address, imu_buffer, 1);
+	CheckI2C(HAL_I2C_Master_Transmit_IT(imu_handle, IMU_address, imu_buffer, 1));
 	wait_to_send();
 	
 	set_receiving_flag(); //set flag
@@ -144,7 +152,7 @@ int8_t read_gyro()
 		set_error(IMU_READ_ERR);
 		return -1;
 	}
-	wait_to_receive(); //wait for buffer to receive
+	wait_to_receive(); //wait for buffer to receive*/
 	//Decode buffer
 	acc_y = imu_buffer[0] << 8 | imu_buffer[1];
 	acc_x = imu_buffer[2] << 8 | imu_buffer[3];

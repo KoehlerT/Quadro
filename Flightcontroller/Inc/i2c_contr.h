@@ -9,5 +9,6 @@ void set_sending_flag();
 void wait_to_send();
 void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef* handle);
 void HAL_I2C_MasterTxCpltCallback(I2C_HandleTypeDef* handle);
+void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef* handle);
 
 #endif
